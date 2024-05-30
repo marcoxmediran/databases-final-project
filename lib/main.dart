@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/home.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
