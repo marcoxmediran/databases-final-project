@@ -1,8 +1,10 @@
 class Employer {
+  final int employerKey;
   final String employerName;
   final String employerAddress;
 
   Employer({
+    required this.employerKey,
     required this.employerName,
     required this.employerAddress,
   });
@@ -16,6 +18,7 @@ class Employer {
 
   factory Employer.fromMap(Map<String, dynamic> map) {
     return Employer(
+      employerKey: map['employerKey'] ?? '',
       employerName: map['employerName'] ?? '',
       employerAddress: map['employerAddress'] ?? '',
     );
@@ -23,6 +26,6 @@ class Employer {
 
   @override
   String toString() {
-    return '$employerName, $employerAddress';
+    return '$employerKey: $employerName, $employerAddress';
   }
 }

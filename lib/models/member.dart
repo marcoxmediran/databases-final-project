@@ -1,10 +1,11 @@
 class Member {
+  final int mid;
   final String occupationalStatus;
   final String membershipType;
   final String memberName;
   final String motherName;
   final String fatherName;
-  final String spouseName;
+  final String? spouseName;
   final String dateOfBirth;
   final String placeOfBirth;
   final String sex;
@@ -22,6 +23,7 @@ class Member {
   final String dateOfRegistration;
 
   Member({
+    required this.mid,
     required this.occupationalStatus,
     required this.membershipType,
     required this.memberName,
@@ -73,6 +75,7 @@ class Member {
 
   factory Member.fromMap(Map<String, dynamic> map) {
     return Member(
+      mid: map['mid'] ?? '',
       occupationalStatus: map['occupationalStatus'] ?? '',
       membershipType: map['membershipType'] ?? '',
       memberName: map['memberName'] ?? '',
@@ -95,5 +98,10 @@ class Member {
       cellphoneNumber: map['cellphoneNumber'] ?? '',
       dateOfRegistration: map['dateOfRegistration'] ?? '',
     );
+  }
+
+  @override
+  String toString() {
+    return '$mid: $memberName';
   }
 }

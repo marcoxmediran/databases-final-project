@@ -29,6 +29,11 @@ class DatabaseHandler {
     );
   }
 
+  Future<void> deleteTables() async {
+    final path = join(await getDatabasesPath(), 'database.db');
+    await deleteDatabase(path);
+  }
+
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE "MEMBERS" (
@@ -52,10 +57,11 @@ class DatabaseHandler {
       	"permanentAddress"	TEXT NOT NULL,
       	"presentAddress"	TEXT NOT NULL,
       	"preferredAddress"	TEXT NOT NULL,
-      	"cellphoneNumer"	TEXT NOT NULL,
+      	"cellphoneNumber"	TEXT NOT NULL,
       	"dateOfRegistration"	TEXT NOT NULL,
       	UNIQUE("mid"),
-      	PRIMARY KEY("mid" AUTOINCREMENT)
+      	PRIMARY KEY("mid" AUTOINCREMENT),
+        UNIQUE("occupationalStatus","membershipType","memberName","motherName","fatherName","spouseName","dateOfBirth","placeOfBirth","sex","height","weight","maritalStatus","citizenship","frequencyOfPayment","tin","sss","permanentAddress","presentAddress","preferredAddress","cellphoneNumber","dateOfRegistration")
       )
     ''');
     await db.execute('''
@@ -63,7 +69,8 @@ class DatabaseHandler {
 	      "employerKey"	INTEGER NOT NULL,
 	      "employerName"	TEXT NOT NULL,
 	      "employerAddress"	TEXT NOT NULL,
-	      PRIMARY KEY("employerKey" AUTOINCREMENT)
+	      PRIMARY KEY("employerKey" AUTOINCREMENT),
+        UNIQUE("employerName","employerAddress")
       )
     ''');
     await db.execute('''
@@ -71,7 +78,8 @@ class DatabaseHandler {
       	"heirKey"	INTEGER NOT NULL,
       	"heirName"	TEXT NOT NULL,
       	"heirDateOfBirth"	TEXT NOT NULL,
-      	PRIMARY KEY("heirKey" AUTOINCREMENT)
+      	PRIMARY KEY("heirKey" AUTOINCREMENT),
+        UNIQUE("heirName","heirDateOfBirth")
       )
     ''');
     await db.execute('''
