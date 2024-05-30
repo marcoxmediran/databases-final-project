@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:databases_final_project/database/database_handler.dart';
+import 'package:databases_final_project/models/employer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,6 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final DatabaseHandler _databaseHandler = DatabaseHandler();
   int screenIndex = 0;
   late bool drawerMode;
 
@@ -70,6 +73,18 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          Employer a = Employer(
+            employerName: 'Google Philippines',
+            employerAddress: 'Taguig, Metro Manila',
+          );
+          await _databaseHandler.insertEmployer(a);
+          print('Added employer: ' + a.toString());
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add Member'),
+      ),
     );
   }
 
@@ -94,6 +109,13 @@ class _HomeState extends State<Home> {
             tooltip: destination.label,
           );
         }).toList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          print(await _databaseHandler.getEmployers());
+          //await _databaseHandler.deleteAllRows();
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
