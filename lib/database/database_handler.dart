@@ -158,4 +158,9 @@ class DatabaseHandler {
     await db.execute('DELETE FROM EMPLOYMENT');
     await db.execute('DELETE FROM HEIR_RELATIONSHIPS');
   }
+
+  Future<void> rawQuery(String query) async {
+    final db = await _databaseHandler.database;
+    await db.rawQuery(query);
+  }
 }

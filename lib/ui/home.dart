@@ -1,8 +1,6 @@
-import 'package:databases_final_project/models/heir.dart';
-import 'package:databases_final_project/models/member.dart';
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/database/database_handler.dart';
-import 'package:databases_final_project/models/employer.dart';
+import 'package:databases_final_project/ui/query.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,7 +25,7 @@ class _HomeState extends State<Home> {
         screen = const Placeholder();
         break;
       case 2:
-        screen = const Placeholder();
+        screen = const Query();
         break;
       default:
         throw UnimplementedError('No widget for Screen $screenIndex');
@@ -76,41 +74,9 @@ class _HomeState extends State<Home> {
                 });
               },
             ),
-            screen,
+            Expanded(child: screen),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          Member a = Member(
-            mid: 0,
-            occupationalStatus: 'Employed',
-            membershipType: '',
-            memberName: 'Marcox Caldejon Mediran',
-            motherName: 'Michelle Robinson Obama',
-            fatherName: 'Barack Hussein Obama',
-            spouseName: null,
-            dateOfBirth: '2003-09-23',
-            placeOfBirth: 'General Trias, Cavite',
-            sex: 'Male',
-            height: '173',
-            weight: '53',
-            maritalStatus: 'S',
-            citizenship: 'Filipino',
-            frequencyOfPayment: 'Quarterly',
-            tin: '123123123',
-            sss: '647891123345',
-            permanentAddress: 'General Trias City, Cavite',
-            presentAddress: 'General Trias City, Cavite',
-            preferredAddress: 'PHA',
-            cellphoneNumber: '+639490007779',
-            dateOfRegistration: '2024-03-12',
-          );
-          await _databaseHandler.insertMember(a);
-          print('Added member: ' + a.toString());
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Add Member'),
       ),
     );
   }
@@ -134,12 +100,6 @@ class _HomeState extends State<Home> {
             tooltip: destination.label,
           );
         }).toList(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          print(await _databaseHandler.getMembers());
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

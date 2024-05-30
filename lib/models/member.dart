@@ -5,7 +5,7 @@ class Member {
   final String memberName;
   final String motherName;
   final String fatherName;
-  final String? spouseName;
+  final String spouseName;
   final String dateOfBirth;
   final String placeOfBirth;
   final String sex;
