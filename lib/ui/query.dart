@@ -29,6 +29,7 @@ class _QueryState extends State<Query> {
               controller: _queryController,
               onSubmitted: (String text) async {
                 await _databaseHandler.rawQuery(text);
+                _queryController.clear();
               },
             ),
           ),
@@ -56,6 +57,7 @@ class _QueryState extends State<Query> {
           FloatingActionButton.extended(
             onPressed: () async {
               await _databaseHandler.rawQuery(_queryController.text);
+              _queryController.clear();
             },
             icon: const Icon(Icons.terminal_outlined),
             label: const Text('Execute'),
