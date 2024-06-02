@@ -1,3 +1,4 @@
+import 'package:databases_final_project/ui/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/ui/records.dart';
 import 'package:databases_final_project/ui/query.dart';
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     switch (screenIndex) {
       case 0:
-        screen = const Placeholder();
+        screen = const LoadingPage();
         break;
       case 1:
         screen = const RecordsPage();
@@ -50,7 +51,6 @@ class _HomeState extends State<Home> {
               extended: true,
               minWidth: 80,
               minExtendedWidth: 180,
-              backgroundColor: const Color(0xfff2ecf4),
               leading: const SizedBox(
                 height: 32,
                 child: Text(
@@ -82,23 +82,25 @@ class _HomeState extends State<Home> {
 
   // Scaffold for mobile devices
   Widget buildBottomBarScaffold() {
-    return Scaffold(
-      body: screen,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: screenIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            screenIndex = index;
-          });
-        },
-        destinations: destinations.map((ScaffoldDestination destination) {
-          return NavigationDestination(
-            label: destination.label,
-            icon: destination.icon,
-            selectedIcon: destination.selectedIcon,
-            tooltip: destination.label,
-          );
-        }).toList(),
+    return SafeArea(
+      child: Scaffold(
+        body: screen,
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: screenIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              screenIndex = index;
+            });
+          },
+          destinations: destinations.map((ScaffoldDestination destination) {
+            return NavigationDestination(
+              label: destination.label,
+              icon: destination.icon,
+              selectedIcon: destination.selectedIcon,
+              tooltip: destination.label,
+            );
+          }).toList(),
+        ),
       ),
     );
   }
