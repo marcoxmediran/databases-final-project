@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:databases_final_project/database/database_handler.dart';
+import 'package:databases_final_project/ui/records.dart';
 import 'package:databases_final_project/ui/query.dart';
 
 class Home extends StatefulWidget {
@@ -10,7 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final DatabaseHandler _databaseHandler = DatabaseHandler();
   int screenIndex = 0;
   late Widget screen;
   late bool drawerMode;
@@ -22,7 +21,7 @@ class _HomeState extends State<Home> {
         screen = const Placeholder();
         break;
       case 1:
-        screen = const Placeholder();
+        screen = const RecordsPage();
         break;
       case 2:
         screen = const Query();
