@@ -1,6 +1,8 @@
 import 'package:databases_final_project/ui/loading_page.dart';
+import 'package:databases_final_project/ui/member_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:databases_final_project/ui/records.dart';
+import 'package:databases_final_project/ui/employer_builder.dart';
+import 'package:databases_final_project/ui/heir_builder.dart';
 import 'package:databases_final_project/ui/query.dart';
 
 class Home extends StatefulWidget {
@@ -19,12 +21,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     switch (screenIndex) {
       case 0:
-        screen = const LoadingPage();
+        screen = const MemberBuilder();
         break;
       case 1:
-        screen = const RecordsPage();
+        screen = const EmployerBuilder();
         break;
       case 2:
+        screen = const HeirBuilder();
+        break;
+      case 3:
         screen = const Query();
         break;
       default:
@@ -116,8 +121,9 @@ class ScaffoldDestination {
 }
 
 const List<ScaffoldDestination> destinations = <ScaffoldDestination>[
-  ScaffoldDestination('Home', Icon(Icons.home_outlined), Icon(Icons.home)),
   ScaffoldDestination(
-      'Records', Icon(Icons.inventory_2_outlined), Icon(Icons.inventory_2)),
-  ScaffoldDestination('Query', Icon(Icons.code_outlined), Icon(Icons.code)),
+      'Members', Icon(Icons.person_outline), Icon(Icons.person)),
+  ScaffoldDestination('Employers', Icon(Icons.work_outline), Icon(Icons.work)),
+  ScaffoldDestination('Heirs', Icon(Icons.home_outlined), Icon(Icons.home)),
+  ScaffoldDestination('Debug', Icon(Icons.code_outlined), Icon(Icons.code)),
 ];
