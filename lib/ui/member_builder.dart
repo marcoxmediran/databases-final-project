@@ -32,13 +32,13 @@ class _MemberState extends State<MemberBuilder> {
               itemBuilder: (contex, index) {
                 Member member = snapshot.data![index];
                 return InkWell(
-                  onTap: () => print(member.toString()),
+                  onTap: () async {},
                   child: ListTile(
                     leading: const CircleAvatar(
-                      child: Icon(Icons.work_outline),
+                      child: Icon(Icons.person_outline),
                     ),
-                    title: Text('${member.mid}: ${member.memberName}'),
-                    subtitle: Text(member.dateOfRegistration),
+                    title: Text(member.memberName),
+                    subtitle: Text(member.formatMid()),
                   ),
                 );
               },

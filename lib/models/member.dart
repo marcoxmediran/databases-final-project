@@ -100,6 +100,14 @@ class Member {
     );
   }
 
+  String formatMid() {
+    var padded = mid.toString().padLeft(12, '0');
+    var sub0 = padded.substring(0, 4);
+    var sub1 = padded.substring(4, 8);
+    var sub2 = padded.substring(8, 12);
+    return '$sub0-$sub1-$sub2';
+  }
+
   @override
   String toString() {
     return '$mid: $memberName';

@@ -144,9 +144,32 @@ class DatabaseHandler {
     return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
   }
 
+  Future<List<Employer>> getEmployment(Member member) async {
+    final db = await _databaseHandler.database;
+    final mid = member.mid;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'EMPLOYMENT',
+      where: '"mid" = ?',
+      whereArgs: [mid],
+    );
+    print(maps);
+    return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
+  }
+
   Future<List<Heir>> getHeirs() async {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query('HEIRS');
+    return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
+  }
+
+  Future<List<Heir>> getRelationships(Member member) async {
+    final db = await _databaseHandler.database;
+    final mid = member.mid;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'HEIR_RELATIONSHIPS',
+      where: '"mid" = ?',
+      whereArgs: [mid],
+    );
     return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
   }
 
