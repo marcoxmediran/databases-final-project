@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
               extended: true,
               minWidth: 80,
               minExtendedWidth: 180,
+              backgroundColor: const Color(0xffeceef4),
               leading: const SizedBox(
                 height: 32,
                 child: Text(

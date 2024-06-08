@@ -1,26 +1,20 @@
 PODS:
-  - dynamic_color (0.0.2):
-    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - sqflite (0.0.3):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
-  - dynamic_color (from `Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - sqflite (from `Flutter/ephemeral/.symlinks/plugins/sqflite/darwin`)
 
 EXTERNAL SOURCES:
-  dynamic_color:
-    :path: Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   sqflite:
     :path: Flutter/ephemeral/.symlinks/plugins/sqflite/darwin
 
 SPEC CHECKSUMS:
-  dynamic_color: 2eaa27267de1ca20d879fbd6e01259773fb1670f
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
 

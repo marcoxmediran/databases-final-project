@@ -1,5 +1,7 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
+import 'package:databases_final_project/ui/member_inkwell.dart';
+import 'package:databases_final_project/ui/member_profile_page.dart';
 import 'package:flutter/material.dart';
 
 class MemberBuilder extends StatefulWidget {
@@ -31,16 +33,7 @@ class _MemberState extends State<MemberBuilder> {
               itemCount: snapshot.data!.length,
               itemBuilder: (contex, index) {
                 Member member = snapshot.data![index];
-                return InkWell(
-                  onTap: () async {},
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.person_outline),
-                    ),
-                    title: Text(member.memberName),
-                    subtitle: Text(member.formatMid()),
-                  ),
-                );
+                return MemberInkwell(member: member);
               },
             );
           }),
