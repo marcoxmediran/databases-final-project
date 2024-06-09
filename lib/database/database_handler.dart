@@ -1,6 +1,8 @@
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/models/employer.dart';
+import 'package:databases_final_project/models/employment.dart';
 import 'package:databases_final_project/models/heir.dart';
+import 'package:databases_final_project/models/relationship.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -144,16 +146,16 @@ class DatabaseHandler {
     return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
   }
 
-  Future<List<Employer>> getEmployment(Member member) async {
+  Future<List<Employment>> getEmployment(Member member) async {
     final db = await _databaseHandler.database;
     final mid = member.mid;
     final List<Map<String, dynamic>> maps = await db.query(
-      'EMPLOYMENT',
+      'EMPLOYERS NATURAL JOIN EMPLOYMENT',
       where: '"mid" = ?',
       whereArgs: [mid],
     );
-    print(maps);
-    return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
+    return List.generate(
+        maps.length, (index) => Employment.fromMap(maps[index]));
   }
 
   Future<List<Heir>> getHeirs() async {
@@ -162,15 +164,16 @@ class DatabaseHandler {
     return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
   }
 
-  Future<List<Heir>> getRelationships(Member member) async {
+  Future<List<Relationship>> getRelationships(Member member) async {
     final db = await _databaseHandler.database;
     final mid = member.mid;
     final List<Map<String, dynamic>> maps = await db.query(
-      'HEIR_RELATIONSHIPS',
+      'HEIRS NATURAL JOIN HEIR_RELATIONSHIPS',
       where: '"mid" = ?',
       whereArgs: [mid],
     );
-    return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
+    return List.generate(
+        maps.length, (index) => Relationship.fromMap(maps[index]));
   }
 
   Future<void> deleteAllRows() async {

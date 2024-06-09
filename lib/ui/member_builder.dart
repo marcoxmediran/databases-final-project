@@ -1,7 +1,6 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/ui/member_inkwell.dart';
-import 'package:databases_final_project/ui/member_profile_page.dart';
 import 'package:flutter/material.dart';
 
 class MemberBuilder extends StatefulWidget {

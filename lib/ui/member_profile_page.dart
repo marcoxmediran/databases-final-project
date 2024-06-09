@@ -19,10 +19,15 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(member.memberName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
         ],
       ),
+      body: CustomScrollView(),
     );
   }
 }
