@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
               extended: true,
               minWidth: 80,
               minExtendedWidth: 180,
-              backgroundColor: const Color(0xffeceef4),
+              backgroundColor: Theme.of(context).hoverColor,
               leading: SizedBox(
                 height: 40,
                 child: Image.asset('assets/images/pagibig_fund_logo.png'),
