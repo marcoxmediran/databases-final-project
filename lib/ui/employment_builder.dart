@@ -37,7 +37,10 @@ class _EmploymentBuilderState extends State<EmploymentBuilder> {
         ),
         child: Column(
           children: [
-            const Text('Member Employment'),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 8),
+              child: Text('Employment', style: TextStyle(fontSize: 20)),
+            ),
             Expanded(
               child: FutureBuilder<List<Employment>>(
                   future: _getEmployment(widget.member),

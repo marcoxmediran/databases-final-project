@@ -38,7 +38,10 @@ class _RelationshipBuilderState extends State<RelationshipBuilder> {
         ),
         child: Column(
           children: [
-            const Text('Member Heirs'),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 8),
+              child: Text('Heirs', style: TextStyle(fontSize: 20)),
+            ),
             Expanded(
               child: FutureBuilder<List<Relationship>>(
                   future: _getRelationships(widget.member),

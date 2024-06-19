@@ -31,11 +31,7 @@ class _MemberInkwellState extends State<MemberInkwell> {
   Widget build(BuildContext context) {
     Member member = widget.member;
     return InkWell(
-      onTap: () async {
-        var employment = await _getEmployment(member);
-        var relationships = await _getRelationships(member);
-        employment.forEach((element) => print(element));
-        relationships.forEach((element) => print(element));
+      onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(

@@ -108,6 +108,31 @@ class Member {
     return '$sub0-$sub1-$sub2';
   }
 
+  String getPrefferedAddress() {
+    return preferredAddress == 'PHA' ? presentAddress : permanentAddress;
+  }
+
+  String getSpouse() {
+    return spouseName == '' ? 'None' : spouseName;
+  }
+
+  String getMaritalStatus() {
+    switch (maritalStatus) {
+      case 'S':
+        return 'Single';
+      case 'M':
+        return 'Married';
+      case 'W':
+        return 'Widower';
+      case 'A':
+        return 'Annulled';
+      case 'LS':
+        return 'Legally Separated';
+      default:
+        return 'Error';
+    }
+  }
+
   @override
   String toString() {
     return '$mid: $memberName';
