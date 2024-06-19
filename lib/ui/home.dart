@@ -1,3 +1,5 @@
+import 'package:databases_final_project/ui/employer_builder.dart';
+import 'package:databases_final_project/ui/heir_builder.dart';
 import 'package:databases_final_project/ui/loading_page.dart';
 import 'package:databases_final_project/ui/member_builder.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,12 @@ class _HomeState extends State<Home> {
         screen = const MemberBuilder();
         break;
       case 2:
+        screen = const EmployerBuilder();
+        break;
+      case 3:
+        screen = const HeirBuilder();
+        break;
+      case 4:
         screen = const Query();
         break;
       default:
@@ -52,12 +60,9 @@ class _HomeState extends State<Home> {
               minWidth: 80,
               minExtendedWidth: 180,
               backgroundColor: const Color(0xffeceef4),
-              leading: const SizedBox(
-                height: 32,
-                child: Text(
-                  'Pag-IBIG Logo Bla Bla',
-                  textAlign: TextAlign.end,
-                ),
+              leading: SizedBox(
+                height: 40,
+                child: Image.asset('assets/images/pagibig_fund_logo.png'),
               ),
               destinations: destinations.map((ScaffoldDestination destination) {
                 return NavigationRailDestination(
@@ -118,7 +123,8 @@ class ScaffoldDestination {
 
 const List<ScaffoldDestination> destinations = <ScaffoldDestination>[
   ScaffoldDestination('Home', Icon(Icons.home_outlined), Icon(Icons.home)),
-  ScaffoldDestination(
-      'Records', Icon(Icons.folder_outlined), Icon(Icons.folder)),
+  ScaffoldDestination('Records', Icon(Icons.face_outlined), Icon(Icons.face)),
+  ScaffoldDestination('Employers', Icon(Icons.work_outline), Icon(Icons.work)),
+  ScaffoldDestination('Heirs', Icon(Icons.group_outlined), Icon(Icons.group)),
   ScaffoldDestination('Debug', Icon(Icons.code_outlined), Icon(Icons.code)),
 ];

@@ -20,6 +20,11 @@ class _MemberState extends State<MemberBuilder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        icon: const Icon(Icons.add),
+        label: const Text('Add Record'),
+      ),
       body: FutureBuilder<List<Member>>(
           future: _getMembers(),
           builder: (context, snapshot) {

@@ -35,7 +35,7 @@ class _HeirState extends State<HeirBuilder> {
                   onTap: () => print(heir.toString()),
                   child: ListTile(
                     leading: const CircleAvatar(
-                      child: Icon(Icons.work_outline),
+                      child: Icon(Icons.person),
                     ),
                     title: Text('${heir.heirKey}: ${heir.heirName}'),
                     subtitle: Text(heir.heirDateOfBirth),

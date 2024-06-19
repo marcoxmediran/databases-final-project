@@ -42,8 +42,10 @@ class _MemberInkwellState extends State<MemberInkwell> {
                 builder: (context) => MemberProfilePage(member: member)));
       },
       child: ListTile(
-        leading: const CircleAvatar(
-          child: Icon(Icons.person_outline),
+        leading: CircleAvatar(
+          child: (member.sex == 'Male')
+              ? const Icon(Icons.face)
+              : const Icon(Icons.face_2),
         ),
         title: Text(member.memberName),
         subtitle: Text(member.formatMid()),

@@ -35,7 +35,7 @@ class _EmployerBuilderState extends State<EmployerBuilder> {
                   onTap: () => print(employer.toString()),
                   child: ListTile(
                     leading: const CircleAvatar(
-                      child: Icon(Icons.work_outline),
+                      child: Icon(Icons.apartment),
                     ),
                     title: Text(employer.employerName),
                     subtitle: Text(employer.employerAddress),
