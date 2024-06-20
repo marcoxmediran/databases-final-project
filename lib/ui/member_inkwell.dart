@@ -39,9 +39,7 @@ class _MemberInkwellState extends State<MemberInkwell> {
       },
       child: ListTile(
         leading: CircleAvatar(
-          child: (member.sex == 'Male')
-              ? const Icon(Icons.face)
-              : const Icon(Icons.face_2),
+          child: member.generateIcon(),
         ),
         title: Text(member.memberName),
         subtitle: Text(member.formatMid()),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Member {
   final int mid;
   final String occupationalStatus;
@@ -130,6 +132,22 @@ class Member {
         return 'Legally Separated';
       default:
         return 'Error';
+    }
+  }
+
+  Icon generateIcon() {
+    if (sex == 'Male') {
+      return const Icon(Icons.face);
+    } else {
+      return const Icon(Icons.face_2);
+    }
+  }
+
+  Icon generateIconWithSize(var size) {
+    if (sex == 'Male') {
+      return Icon(Icons.face, size: size);
+    } else {
+      return Icon(Icons.face_2, size: size);
     }
   }
 

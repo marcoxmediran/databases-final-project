@@ -21,7 +21,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
   Widget build(BuildContext context) {
     Member member = widget.member;
     double widgetSpacing = max((MediaQuery.sizeOf(context).width / 6), 64);
-    bool isWidescreen = MediaQuery.sizeOf(context).width >= 1000;
+    bool isWidescreen = MediaQuery.sizeOf(context).width >= 1130;
 
     return Scaffold(
       body: CustomScrollView(
@@ -52,109 +52,93 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                   const SizedBox(height: 64),
                   CircleAvatar(
                     radius: 64,
-                    child: Icon(
-                      (member.sex == 'Male') ? Icons.face : Icons.face_2,
-                      size: 80,
-                    ),
+                    child: member.generateIconWithSize(80.toDouble()),
                   ),
                 ],
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                SizedBox(height: widgetSpacing / 8),
-                Padding(
-                  padding: EdgeInsets.only(
-                      right: widgetSpacing, left: widgetSpacing),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).canvasColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(color: Colors.grey, blurRadius: 1)
-                        ]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Flex(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        direction:
-                            isWidescreen ? Axis.horizontal : Axis.vertical,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Membership Information',
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: widgetSpacing, right: widgetSpacing),
+              child: Column(
+                children: [
+                  const SizedBox(height: 32),
+                  const Divider(),
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Flex(
+                      direction: isWidescreen ? Axis.horizontal : Axis.vertical,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Membership Information',
                                 style: TextStyle(fontSize: 20)),
-                              
-                              Text('MID: ${member.formatMid()}'),
-                              Text('TIN: ${member.tin}'),
-                              Text('SSS: ${member.sss}'),
-                              Text(
-                                  'Occupational Status: ${member.occupationalStatus}'),
-                              Text(
-                                  'Frequency of Payment: ${member.frequencyOfPayment}'),
-                              Text(
-                                  'Date of Registration: ${member.dateOfRegistration}'),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Personal Information',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              Text('Name: ${member.memberName}'),
-                              Text(
-                                  'Cellphone Number: ${member.cellphoneNumber}'),
-                              Text('Sex: ${member.sex}'),
-                              Text('Citizenship: ${member.citizenship}'),
-                              Text('Height: ${member.height}cm'),
-                              Text('Weight: ${member.weight}kg'),
-                              Text(
-                                  'Preffered Address: ${member.getPrefferedAddress()}'),
-                              Text('Place of Birth: ${member.placeOfBirth}'),
-                              Text(
-                                  'Marital Status: ${member.getMaritalStatus()}'),
-                              Text('Mother\'s Name: ${member.motherName}'),
-                              Text('Father\'s Name: ${member.fatherName}'),
-                              Text('Spouse\'s Name: ${member.getSpouse()}'),
-                            ],
-                          ),
-                        ],
-                      ),
+                            Text('MID: ${member.formatMid()}'),
+                            Text('TIN: ${member.tin}'),
+                            Text('SSS: ${member.sss}'),
+                            Text(
+                                'Occupational Status: ${member.occupationalStatus}'),
+                            Text(
+                                'Frequency of Payment: ${member.frequencyOfPayment}'),
+                            Text(
+                                'Date of Registration: ${member.dateOfRegistration}'),
+                            Text(
+                                'Preffered Address: ${member.getPrefferedAddress()}'),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Personal Information',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text('Name: ${member.memberName}'),
+                            Text('Cellphone Number: ${member.cellphoneNumber}'),
+                            Text('Sex: ${member.sex}'),
+                            Text('Citizenship: ${member.citizenship}'),
+                            Text('Height: ${member.height}cm'),
+                            Text('Weight: ${member.weight}kg'),
+                            Text('Birthdate: ${member.dateOfBirth}'),
+                            Text('Place of Birth: ${member.placeOfBirth}'),
+                            Text(
+                                'Marital Status: ${member.getMaritalStatus()}'),
+                            Text('Mother\'s Name: ${member.motherName}'),
+                            Text('Father\'s Name: ${member.fatherName}'),
+                            Text('Spouse\'s Name: ${member.getSpouse()}'),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: widgetSpacing / 8),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: widgetSpacing, right: widgetSpacing),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 32),
+                  Flex(
+                    direction: isWidescreen ? Axis.horizontal : Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 400,
-                          child: EmploymentBuilder(member: member),
-                        ),
+                      SizedBox(
+                        height: 400,
+                        width: 360,
+                        child: EmploymentBuilder(member: member),
                       ),
-                      SizedBox(width: widgetSpacing / 8),
-                      Expanded(
-                        child: SizedBox(
-                          height: 400,
-                          child: RelationshipBuilder(member: member),
-                        ),
+                      const SizedBox(height: 16, width: 16),
+                      SizedBox(
+                        height: 400,
+                        width: 360,
+                        child: RelationshipBuilder(member: member),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 64),
-              ],
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
           ),
         ],
