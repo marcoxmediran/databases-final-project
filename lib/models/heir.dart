@@ -24,6 +24,13 @@ class Heir {
     );
   }
 
+  String formatKey() {
+    var padded = heirKey.toString().padLeft(8, '0');
+    var sub0 = padded.substring(0, 4);
+    var sub1 = padded.substring(4, 8);
+    return '$sub0-$sub1';
+  }
+
   @override
   String toString() {
     return '$heirKey: $heirName, $heirDateOfBirth';

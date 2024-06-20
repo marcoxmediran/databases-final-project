@@ -1,5 +1,6 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
+import 'package:databases_final_project/ui/form.dart';
 import 'package:databases_final_project/ui/member_inkwell.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,9 @@ class _MemberState extends State<MemberBuilder> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FormPage()));
+        },
         icon: const Icon(Icons.add),
         label: const Text('Add Record'),
       ),

@@ -32,13 +32,12 @@ class _HeirState extends State<HeirBuilder> {
               itemBuilder: (contex, index) {
                 Heir heir = snapshot.data![index];
                 return InkWell(
-                  onTap: () => print(heir.toString()),
                   child: ListTile(
                     leading: const CircleAvatar(
                       child: Icon(Icons.person),
                     ),
-                    title: Text('${heir.heirKey}: ${heir.heirName}'),
-                    subtitle: Text(heir.heirDateOfBirth),
+                    title: Text(heir.heirName),
+                    subtitle: Text(heir.formatKey()),
                   ),
                 );
               },

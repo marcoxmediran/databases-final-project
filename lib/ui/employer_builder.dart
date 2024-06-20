@@ -32,13 +32,13 @@ class _EmployerBuilderState extends State<EmployerBuilder> {
               itemBuilder: (contex, index) {
                 Employer employer = snapshot.data![index];
                 return InkWell(
-                  onTap: () => print(employer.toString()),
                   child: ListTile(
                     leading: const CircleAvatar(
                       child: Icon(Icons.apartment),
                     ),
-                    title: Text(employer.employerName),
-                    subtitle: Text(employer.employerAddress),
+                    title: Text(
+                        '${employer.employerName} - ${employer.employerAddress}'),
+                    subtitle: Text(employer.formatKey()),
                   ),
                 );
               },
