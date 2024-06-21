@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:databases_final_project/ui/employer_builder.dart';
 import 'package:databases_final_project/ui/heir_builder.dart';
 import 'package:databases_final_project/ui/loading_page.dart';
 import 'package:databases_final_project/ui/member_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/ui/query.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -88,24 +91,43 @@ class _HomeState extends State<Home> {
 
   // Scaffold for mobile devices
   Widget buildBottomBarScaffold() {
-    return SafeArea(
-      child: Scaffold(
-        body: screen,
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: screenIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              screenIndex = index;
-            });
-          },
-          destinations: destinations.map((ScaffoldDestination destination) {
-            return NavigationDestination(
-              label: destination.label,
-              icon: destination.icon,
-              selectedIcon: destination.selectedIcon,
-              tooltip: destination.label,
-            );
-          }).toList(),
+    Color navColor = ElevationOverlay.applySurfaceTint(
+      Theme.of(context).colorScheme.surface,
+      Theme.of(context).colorScheme.surfaceTint,
+      3,
+    );
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarContrastEnforced: true,
+        systemNavigationBarColor: navColor,
+        systemNavigationBarDividerColor: navColor,
+        systemNavigationBarIconBrightness:
+            Theme.of(context).brightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(destinations[screenIndex].label),
+          ),
+          body: screen,
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: screenIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                screenIndex = index;
+              });
+            },
+            destinations: destinations.map((ScaffoldDestination destination) {
+              return NavigationDestination(
+                label: destination.label,
+                icon: destination.icon,
+                selectedIcon: destination.selectedIcon,
+                tooltip: destination.label,
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

@@ -13,9 +13,16 @@ class MemberBuilder extends StatefulWidget {
 
 class _MemberState extends State<MemberBuilder> {
   final DatabaseHandler _databaseHandler = DatabaseHandler();
+  late Future<List<Member>> _members;
 
   Future<List<Member>> _getMembers() async {
     return await _databaseHandler.getMembers();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _members = _getMembers();
   }
 
   @override
@@ -23,13 +30,14 @@ class _MemberState extends State<MemberBuilder> {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => FormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const FormPage()));
         },
         icon: const Icon(Icons.add),
         label: const Text('Add Record'),
       ),
       body: FutureBuilder<List<Member>>(
-          future: _getMembers(),
+          future: _members,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

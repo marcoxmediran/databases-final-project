@@ -1,7 +1,7 @@
-import 'dart:math';
-
+import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/ui/employment_builder.dart';
+import 'package:databases_final_project/ui/form.dart';
 import 'package:databases_final_project/ui/relationship_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +17,13 @@ class MemberProfilePage extends StatefulWidget {
 }
 
 class _MemberProfilePageState extends State<MemberProfilePage> {
+  final DatabaseHandler _databaseHandler = DatabaseHandler();
+
   @override
   Widget build(BuildContext context) {
     Member member = widget.member;
-    double widgetSpacing = max((MediaQuery.sizeOf(context).width / 6), 64);
-    bool isWidescreen = MediaQuery.sizeOf(context).width >= 1130;
+    double widgetSpacing = MediaQuery.sizeOf(context).width / 32;
+    bool isWidescreen = MediaQuery.sizeOf(context).width >= 1000;
 
     return Scaffold(
       body: CustomScrollView(
@@ -34,11 +36,46 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context)),
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Confirm Deletion'),
+                      content: const Text(
+                          'Are you sure you want to delete this member?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await _databaseHandler.deleteMember(member);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.delete),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FormPage(
+                                    member: member,
+                                  )));
+                    },
                     child: const Padding(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       child: Text('Edit'),
@@ -68,7 +105,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                   Flex(
                     direction: isWidescreen ? Axis.horizontal : Axis.vertical,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -102,7 +139,8 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                                 Text('SSS: ${member.sss}'),
                                 Text(
                                     'Occupational Status: ${member.occupationalStatus}'),
-                                Text('Membership Category: '),
+                                Text(
+                                    'Membership Category: ${member.membershipType}'),
                                 Text(
                                     'Frequency of Payment: ${member.frequencyOfPayment}'),
                                 Text(
@@ -115,7 +153,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 32, width: 32),
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).canvasColor,
@@ -150,8 +188,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                               Text('Weight: ${member.weight}kg'),
                               Text('Birthdate: ${member.dateOfBirth}'),
                               Text('Place of Birth: ${member.placeOfBirth}'),
-                              Text(
-                                  'Marital Status: ${member.getMaritalStatus()}'),
+                              Text('Marital Status: ${member.maritalStatus}'),
                               Text('Mother\'s Name: ${member.motherName}'),
                               Text('Father\'s Name: ${member.fatherName}'),
                               Text('Spouse\'s Name: ${member.getSpouse()}'),
@@ -161,11 +198,11 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
                   Flex(
                     direction: isWidescreen ? Axis.horizontal : Axis.vertical,
                     mainAxisAlignment: isWidescreen
-                        ? MainAxisAlignment.spaceAround
+                        ? MainAxisAlignment.center
                         : MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
@@ -173,7 +210,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                         width: 360,
                         child: EmploymentBuilder(member: member),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 32, width: 32),
                       SizedBox(
                         height: 400,
                         width: 360,

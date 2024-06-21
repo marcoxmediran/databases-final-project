@@ -118,6 +118,25 @@ class DatabaseHandler {
     );
   }
 
+  Future<void> updateMember(Member member) async {
+    final db = await _databaseHandler.database;
+    await db.update(
+      'MEMBERS',
+      member.toMap(),
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
+  }
+
+  Future<void> deleteMember(Member member) async {
+    final db = await _databaseHandler.database;
+    await db.delete(
+      'MEMBERS',
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
+  }
+
   Future<void> insertEmployer(Employer employer) async {
     final db = await _databaseHandler.database;
     await db.insert(
