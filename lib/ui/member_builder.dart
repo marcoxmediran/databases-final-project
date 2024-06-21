@@ -1,7 +1,7 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/ui/form.dart';
-import 'package:databases_final_project/ui/member_inkwell.dart';
+import 'package:databases_final_project/ui/member_profile_page.dart';
 import 'package:flutter/material.dart';
 
 class MemberBuilder extends StatefulWidget {
@@ -19,6 +19,10 @@ class _MemberState extends State<MemberBuilder> {
     return await _databaseHandler.getMembers();
   }
 
+  Future onReturn() async => setState(() {
+        _members = _getMembers();
+      });
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +35,8 @@ class _MemberState extends State<MemberBuilder> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const FormPage()));
+                  MaterialPageRoute(builder: (context) => const FormPage()))
+              .then((_) => onReturn());
         },
         icon: const Icon(Icons.add),
         label: const Text('Add Record'),
@@ -48,7 +53,23 @@ class _MemberState extends State<MemberBuilder> {
               itemCount: snapshot.data!.length,
               itemBuilder: (contex, index) {
                 Member member = snapshot.data![index];
-                return MemberInkwell(member: member);
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MemberProfilePage(member: member)))
+                        .then((_) => onReturn());
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: member.generateIcon(),
+                    ),
+                    title: Text(member.memberName),
+                    subtitle: Text(member.formatMid()),
+                  ),
+                );
               },
             );
           }),

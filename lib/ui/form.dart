@@ -374,6 +374,7 @@ class _FormPageState extends State<FormPage> {
                         await _databaseHandler.insertMember(toInsert);
                       } else {
                         await _databaseHandler.updateMember(toInsert);
+                        Navigator.pop(context);
                       }
                       Navigator.pop(context);
                     },
