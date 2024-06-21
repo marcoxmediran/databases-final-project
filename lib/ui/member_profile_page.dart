@@ -1,5 +1,6 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
+import 'package:databases_final_project/ui/associative_form.dart';
 import 'package:databases_final_project/ui/employment_builder.dart';
 import 'package:databases_final_project/ui/form.dart';
 import 'package:databases_final_project/ui/relationship_builder.dart';
@@ -65,8 +66,20 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                 },
                 icon: const Icon(Icons.delete),
               ),
+              FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                AssociativeFormPage(member: member)));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 2, right: 2),
+                    child: Text('Add'),
+                  )),
               Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(left: 8, right: 16),
                 child: FilledButton(
                     onPressed: () {
                       Navigator.push(
@@ -102,6 +115,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
               child: Column(
                 children: [
                   const SizedBox(height: 64),
+                  const SizedBox(height: 8),
                   Flex(
                     direction: isWidescreen ? Axis.horizontal : Axis.vertical,
                     crossAxisAlignment: CrossAxisAlignment.start,

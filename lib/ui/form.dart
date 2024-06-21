@@ -83,7 +83,8 @@ class _FormPageState extends State<FormPage> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context)),
           flexibleSpace: FlexibleSpaceBar(
-            title: Text(member == null ? 'Add Record' : 'Edit Record'),
+            title: Text(
+                member == null ? 'Add Record' : 'Edit ${member.memberName}'),
           ),
         ),
         SliverToBoxAdapter(
@@ -219,7 +220,7 @@ class _FormPageState extends State<FormPage> {
                           controller: _heightController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Height(cm)',
+                            labelText: 'Height (cm)',
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -232,7 +233,7 @@ class _FormPageState extends State<FormPage> {
                           controller: _weightController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Weight(kg)',
+                            labelText: 'Weight (kg)',
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -244,12 +245,16 @@ class _FormPageState extends State<FormPage> {
                         child: TextFormField(
                           controller: _birthdateController,
                           readOnly: true,
-                          onTap: () {
-                            showDatePicker(
+                          onTap: () async {
+                            DateTime? birthdate = await showDatePicker(
                               context: context,
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
                             );
+                            if (birthdate != null) {
+                              _birthdateController.text =
+                                  birthdate.toString().split(' ')[0];
+                            }
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -364,9 +369,7 @@ class _FormPageState extends State<FormPage> {
                         preferredAddress: _preferredAddressController.text,
                         cellphoneNumber: _contactNumberController.text,
                         dateOfRegistration: member == null
-                            ? DateTime(DateTime.now().year,
-                                    DateTime.now().month, DateTime.now().day)
-                                .toString()
+                            ? DateTime.now().toString().split(' ')[0]
                             : member.dateOfRegistration,
                       );
 

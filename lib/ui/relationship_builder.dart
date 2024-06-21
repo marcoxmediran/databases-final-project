@@ -54,8 +54,10 @@ class _RelationshipBuilderState extends State<RelationshipBuilder> {
 
                     if (snapshot.data!.isEmpty) {
                       return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                          child: Text(
+                        'Member has no\nheirs yet.',
+                        textAlign: TextAlign.center,
+                      ));
                     }
 
                     return ListView.builder(

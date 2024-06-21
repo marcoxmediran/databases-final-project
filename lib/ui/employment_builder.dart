@@ -53,8 +53,10 @@ class _EmploymentBuilderState extends State<EmploymentBuilder> {
 
                     if (snapshot.data!.isEmpty) {
                       return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                          child: Text(
+                        'Member has no\nemployment details.',
+                        textAlign: TextAlign.center,
+                      ));
                     }
 
                     return ListView.builder(
