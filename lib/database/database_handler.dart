@@ -172,6 +172,7 @@ class DatabaseHandler {
       'EMPLOYERS NATURAL JOIN EMPLOYMENT',
       where: '"mid" = ?',
       whereArgs: [mid],
+      orderBy: 'dateEmployed DESC',
     );
     return List.generate(
         maps.length, (index) => Employment.fromMap(maps[index]));

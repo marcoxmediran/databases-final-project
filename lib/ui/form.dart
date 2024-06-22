@@ -99,61 +99,94 @@ class _FormPageState extends State<FormPage> {
                   const Text('Membership Category',
                       style: TextStyle(fontSize: 26)),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _occupationalStatusController,
-                    label: const Text('Occupational Status'),
-                    width: 256,
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: 'Employed', label: 'Employed'),
-                      DropdownMenuEntry(
-                          value: 'Unemployed', label: 'Unemployed'),
+                  DropdownButtonFormField(
+                    value: member != null
+                        ? _occupationalStatusController.text
+                        : null,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Employed', child: Text('Employed')),
+                      DropdownMenuItem(
+                          value: 'Unemployed', child: Text('Unemployed')),
                     ],
+                    onChanged: (value) =>
+                        _occupationalStatusController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Occupational Status',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _frequencyOfPaymentController,
-                    label: const Text('Frequency of Payment'),
-                    width: 256,
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: 'Monthly', label: 'Monthly'),
-                      DropdownMenuEntry(value: 'Quarterly', label: 'Quarterly'),
+                  DropdownButtonFormField(
+                    value: member != null
+                        ? _frequencyOfPaymentController.text
+                        : null,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Monthly', child: Text('Monthly')),
+                      DropdownMenuItem(
+                          value: 'Quarterly', child: Text('Quarterly')),
                     ],
+                    onChanged: (value) =>
+                        _frequencyOfPaymentController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Frequency of Payment',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _membershipCategoryController,
-                    label: const Text('Membership Category'),
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(
-                        value: 'ME',
-                        label: 'Mandatory Employed',
-                      ),
-                      DropdownMenuEntry(
-                          value: 'MOFW',
-                          label: 'Mandatory Overseas Filipino Worker'),
-                      DropdownMenuEntry(
-                        value: 'MSE',
-                        label: 'Mandatory Self-Employed',
-                      ),
-                      DropdownMenuEntry(
-                        value: 'VE',
-                        label: 'Voluntary Employed',
-                      ),
-                      DropdownMenuEntry(
-                          value: 'VOFW',
-                          label: 'Voluntary Overseas Filipino Worker'),
-                      DropdownMenuEntry(
-                        value: 'VSE',
-                        label: 'Voluntary Self-Employed',
-                      ),
+                  DropdownButtonFormField(
+                    value: member != null
+                        ? _membershipCategoryController.text
+                        : null,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Mandatory Employed',
+                          child: Text('Mandatory Employed')),
+                      DropdownMenuItem(
+                          value: 'Mandatory OFW', child: Text('Mandatory OFW')),
+                      DropdownMenuItem(
+                          value: 'Mandatory Self-Employed',
+                          child: Text('Mandatory Self-Employed')),
+                      DropdownMenuItem(
+                          value: 'Voluntary Employed',
+                          child: Text('Voluntary Employed')),
+                      DropdownMenuItem(
+                          value: 'Voluntary OFW', child: Text('Voluntary OFW')),
+                      DropdownMenuItem(
+                          value: 'Voluntary Self-Employed',
+                          child: Text('Voluntary Self-Employed')),
                     ],
+                    onChanged: (value) =>
+                        _membershipCategoryController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Membership Category',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
+                  _customSpacer(),
                   _customDivider(),
                   const Text('Personal Details',
                       style: TextStyle(fontSize: 26)),
                   _customSpacer(),
                   TextFormField(
                     controller: _memberNameController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Member\'s Name',
@@ -162,6 +195,10 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _motherNameController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Mother\'s Name',
@@ -170,6 +207,10 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _fatherNameController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Father\'s Name',
@@ -184,29 +225,54 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _sexController,
-                    label: const Text('Sex'),
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: 'Male', label: 'Male'),
-                      DropdownMenuEntry(value: 'Female', label: 'Female'),
+                  DropdownButtonFormField(
+                    value: member != null ? _sexController.text : null,
+                    items: const [
+                      DropdownMenuItem(value: 'Male', child: Text('Male')),
+                      DropdownMenuItem(value: 'Female', child: Text('Female')),
                     ],
+                    onChanged: (value) => _sexController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Sex',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _maritalStatusController,
-                    label: const Text('Marital Status'),
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: 'S', label: 'Single'),
-                      DropdownMenuEntry(value: 'M', label: 'Married'),
-                      DropdownMenuEntry(value: 'A', label: 'Annulled'),
-                      DropdownMenuEntry(
-                          value: 'LS', label: 'Legally Separated'),
+                  DropdownButtonFormField(
+                    value:
+                        member != null ? _maritalStatusController.text : null,
+                    items: const [
+                      DropdownMenuItem(value: 'Single', child: Text('Single')),
+                      DropdownMenuItem(
+                          value: 'Married', child: Text('Married')),
+                      DropdownMenuItem(
+                          value: 'Annulled', child: Text('Annulled')),
+                      DropdownMenuItem(
+                          value: 'Legally Separated',
+                          child: Text('Legally Separated')),
                     ],
+                    onChanged: (value) =>
+                        _maritalStatusController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Marital Status',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   _customSpacer(),
                   TextFormField(
                     controller: _citizenshipController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Citizenship',
@@ -218,6 +284,10 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _heightController,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'This field is required'
+                              : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Height (cm)',
@@ -231,6 +301,10 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _weightController,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'This field is required'
+                              : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Weight (kg)',
@@ -244,6 +318,10 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _birthdateController,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'This field is required'
+                              : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           readOnly: true,
                           onTap: () async {
                             DateTime? birthdate = await showDatePicker(
@@ -270,6 +348,10 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _tinController,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'This field is required'
+                              : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'TIN Number',
@@ -283,6 +365,10 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _sssController,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'This field is required'
+                              : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'SSS Number',
@@ -301,6 +387,10 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _contactNumberController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Contact Number',
@@ -310,6 +400,10 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _placeOfBirthController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Place of Birth',
@@ -318,6 +412,10 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _permanentAddressController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Permanent Address',
@@ -326,60 +424,82 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _presentAddressController,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Present Address',
                     ),
                   ),
                   _customSpacer(),
-                  DropdownMenu(
-                    controller: _preferredAddressController,
-                    label: const Text('Preferred Address'),
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(
-                          value: 'PEHA', label: 'Permanent Address'),
-                      DropdownMenuEntry(value: 'PHA', label: 'Present Address'),
+                  DropdownButtonFormField(
+                    value: member != null
+                        ? _preferredAddressController.text
+                        : null,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Permanent Address',
+                          child: Text('Permanent Address')),
+                      DropdownMenuItem(
+                          value: 'Present Address',
+                          child: Text('Present Address')),
                     ],
+                    onChanged: (value) =>
+                        _preferredAddressController.text = value!,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      labelText: 'Preferred Address',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   _customSpacer(),
                   const SizedBox(height: 64),
                   Center(
                       child: ElevatedButton(
                     onPressed: () async {
-                      Member toInsert = Member(
-                        mid: member == null ? 0 : member.mid,
-                        occupationalStatus: _occupationalStatusController.text,
-                        membershipType: _membershipCategoryController.text,
-                        memberName: _memberNameController.text,
-                        motherName: _motherNameController.text,
-                        fatherName: _fatherNameController.text,
-                        spouseName: _spouseNameController.text,
-                        dateOfBirth: _birthdateController.text,
-                        placeOfBirth: _placeOfBirthController.text,
-                        sex: _sexController.text,
-                        height: _heightController.text,
-                        weight: _weightController.text,
-                        maritalStatus: _maritalStatusController.text,
-                        citizenship: _citizenshipController.text,
-                        frequencyOfPayment: _frequencyOfPaymentController.text,
-                        tin: _tinController.text,
-                        sss: _sssController.text,
-                        permanentAddress: _permanentAddressController.text,
-                        presentAddress: _presentAddressController.text,
-                        preferredAddress: _preferredAddressController.text,
-                        cellphoneNumber: _contactNumberController.text,
-                        dateOfRegistration: member == null
-                            ? DateTime.now().toString().split(' ')[0]
-                            : member.dateOfRegistration,
-                      );
+                      if (_formKey.currentState!.validate()) {
+                        Member toInsert = Member(
+                          mid: member == null ? 0 : member.mid,
+                          occupationalStatus:
+                              _occupationalStatusController.text,
+                          membershipType: _membershipCategoryController.text,
+                          memberName: _memberNameController.text,
+                          motherName: _motherNameController.text,
+                          fatherName: _fatherNameController.text,
+                          spouseName: _spouseNameController.text,
+                          dateOfBirth: _birthdateController.text,
+                          placeOfBirth: _placeOfBirthController.text,
+                          sex: _sexController.text,
+                          height: _heightController.text,
+                          weight: _weightController.text,
+                          maritalStatus: _maritalStatusController.text,
+                          citizenship: _citizenshipController.text,
+                          frequencyOfPayment:
+                              _frequencyOfPaymentController.text,
+                          tin: _tinController.text,
+                          sss: _sssController.text,
+                          permanentAddress: _permanentAddressController.text,
+                          presentAddress: _presentAddressController.text,
+                          preferredAddress: _preferredAddressController.text,
+                          cellphoneNumber: _contactNumberController.text,
+                          dateOfRegistration: member == null
+                              ? DateTime.now().toString().split(' ')[0]
+                              : member.dateOfRegistration,
+                        );
 
-                      if (member == null) {
-                        await _databaseHandler.insertMember(toInsert);
-                      } else {
-                        await _databaseHandler.updateMember(toInsert);
+                        if (member == null) {
+                          await _databaseHandler.insertMember(toInsert);
+                        } else {
+                          await _databaseHandler.updateMember(toInsert);
+                          Navigator.pop(context);
+                        }
                         Navigator.pop(context);
                       }
-                      Navigator.pop(context);
                     },
                     child: const Text('Submit'),
                   )),

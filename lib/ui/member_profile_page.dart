@@ -1,8 +1,9 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
-import 'package:databases_final_project/ui/associative_form.dart';
+import 'package:databases_final_project/ui/employment_form.dart';
 import 'package:databases_final_project/ui/employment_builder.dart';
 import 'package:databases_final_project/ui/form.dart';
+import 'package:databases_final_project/ui/heir_form.dart';
 import 'package:databases_final_project/ui/relationship_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -72,28 +73,40 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AssociativeFormPage(member: member)));
+                                EmploymentFormPage(member: member)));
                   },
                   child: const Padding(
                     padding: EdgeInsets.only(left: 2, right: 2),
-                    child: Text('Add'),
+                    child: Text('Employment'),
                   )),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 16),
-                child: FilledButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FormPage(
-                                    member: member,
-                                  )));
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 2, right: 2),
-                      child: Text('Edit'),
-                    )),
-              ),
+              const SizedBox(width: 8),
+              FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HeirFormPage(member: member)));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 2, right: 2),
+                    child: Text('Heirs'),
+                  )),
+              const SizedBox(width: 8),
+              FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FormPage(
+                                  member: member,
+                                )));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 2, right: 2),
+                    child: Text('Edit'),
+                  )),
+              const SizedBox(width: 16),
             ],
             flexibleSpace: FlexibleSpaceBar(
               title: Text(member.memberName),

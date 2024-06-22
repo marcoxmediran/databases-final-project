@@ -1,0 +1,214 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:databases_final_project/database/database_handler.dart';
+import 'package:databases_final_project/models/relationship.dart';
+import 'package:databases_final_project/models/member.dart';
+import 'package:databases_final_project/models/heir.dart';
+import 'package:flutter/material.dart';
+
+class HeirFormPage extends StatefulWidget {
+  final Member member;
+  const HeirFormPage({super.key, required this.member});
+
+  @override
+  State<StatefulWidget> createState() => _HeirFormPageState();
+}
+
+class _HeirFormPageState extends State<HeirFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  final DatabaseHandler _databaseHandler = DatabaseHandler();
+
+  Future<List<Relationship>> _getRelationships(Member member) async {
+    return await _databaseHandler.getRelationships(member);
+  }
+
+  @override
+  initState() {
+    super.initState();
+    Member member = widget.member;
+    _getRelationships(member).then((result) {
+      result.forEach((element) => setState(() {
+            heirCards.add(HeirCard(element));
+          }));
+    });
+  }
+
+  var heirNames = <TextEditingController>[];
+  var heirBirthdates = <TextEditingController>[];
+  var heirRelationships = <TextEditingController>[];
+  var heirCards = <Card>[];
+  Card HeirCard(Relationship? relationship) {
+    TextEditingController heirNameController = TextEditingController();
+    TextEditingController heirBirthdateController = TextEditingController();
+    TextEditingController heirRelationshipController = TextEditingController();
+    heirNames.add(heirNameController);
+    heirBirthdates.add(heirBirthdateController);
+
+    if (relationship != null) {
+      heirNameController.text = relationship.heirName;
+      heirBirthdateController.text = relationship.heirDateOfBirth;
+      heirRelationshipController.text = relationship.heirRelationship;
+    }
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Heir ${heirCards.length + 1}'),
+            _customSpacer(),
+            TextFormField(
+              controller: heirNameController,
+              validator: (value) => (value == null || value.isEmpty)
+                  ? 'This field is required'
+                  : null,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Full Name',
+              ),
+            ),
+            _customSpacer(),
+            TextFormField(
+              controller: heirBirthdateController,
+              validator: (value) => (value == null || value.isEmpty)
+                  ? 'This field is required'
+                  : null,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              readOnly: true,
+              onTap: () async {
+                DateTime? birthdate = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                );
+                heirBirthdateController.text =
+                    birthdate.toString().split(' ')[0];
+              },
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Birthdate',
+              ),
+            ),
+            _customSpacer(),
+            TextFormField(
+              controller: heirRelationshipController,
+              validator: (value) => (value == null || value.isEmpty)
+                  ? 'This field is required'
+                  : null,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Relationship',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Member member = widget.member;
+    var spacing = max(MediaQuery.sizeOf(context).width / 6, 16).toDouble();
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar.large(
+            pinned: true,
+            floating: true,
+            expandedHeight: 128,
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context)),
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text('Heirs'),
+            ),
+          ),
+          _customSliverSpacer(64),
+          SliverPadding(
+            padding: EdgeInsets.only(left: spacing, right: spacing),
+            sliver: SliverToBoxAdapter(
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text('Heirs', style: TextStyle(fontSize: 26)),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () => heirCards.isEmpty
+                        ? null
+                        : setState(() {
+                            heirCards.removeLast();
+                          }),
+                    child: const Text('Delete'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          heirCards.add(HeirCard(null));
+                        });
+                      }
+                    },
+                    child: const Text('Add'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(left: spacing, right: spacing),
+            sliver: Form(
+              key: _formKey,
+              child: SliverList.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return heirCards[heirCards.length - index - 1];
+                },
+                itemCount: heirCards.length,
+              ),
+            ),
+          ),
+          _customSliverSpacer(64),
+          SliverPadding(
+            padding: EdgeInsets.only(left: spacing, right: spacing),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                  child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    print('form complete');
+                    for (int i = 0; i < heirCards.length; i++) {
+                      Heir heir = Heir(
+                        heirKey: 0,
+                        heirName: heirNames[i].text,
+                        heirDateOfBirth: heirBirthdates[i].text,
+                      );
+                      print(heir);
+                    }
+                  } else {
+                    print('form not complete');
+                  }
+                },
+                child: const Text('Submit'),
+              )),
+            ),
+          ),
+          _customSliverSpacer(64),
+        ],
+      ),
+    );
+  }
+}
+
+Widget _customSpacer() {
+  return const SizedBox(height: 12);
+}
+
+Widget _customSliverSpacer(double height) {
+  return SliverToBoxAdapter(child: SizedBox(height: height));
+}
