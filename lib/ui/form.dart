@@ -219,6 +219,22 @@ class _FormPageState extends State<FormPage> {
                   ),
                   _customSpacer(),
                   DropDownTextField(
+                    controller: _sexController,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'Male', value: 'Male'),
+                      DropDownValueModel(name: 'Female', value: 'Female'),
+                    ],
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'This field is required'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    textFieldDecoration: const InputDecoration(
+                      labelText: 'Sex',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  _customSpacer(),
+                  DropDownTextField(
                     controller: _maritalStatusController,
                     dropDownList: const [
                       DropDownValueModel(name: 'Single', value: 'Single'),

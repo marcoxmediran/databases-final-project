@@ -14,10 +14,8 @@ class Relationship extends Heir {
 
   Map<String, dynamic> toMap() {
     return {
-      'heirKey': heirKey,
-      'heirName': heirName,
-      'heirDateOfBirth': heirDateOfBirth,
       'mid': mid,
+      'heirKey': heirKey,
       'heirRelationship': heirRelationship,
     };
   }

@@ -1,5 +1,5 @@
 class Heir {
-  final int heirKey;
+  int heirKey;
   final String heirName;
   final String heirDateOfBirth;
 

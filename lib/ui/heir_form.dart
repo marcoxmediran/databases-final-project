@@ -18,8 +18,20 @@ class _HeirFormPageState extends State<HeirFormPage> {
   final _formKey = GlobalKey<FormState>();
   final DatabaseHandler _databaseHandler = DatabaseHandler();
 
+  Future<int> _insertHeir(Heir heir) async {
+    return await _databaseHandler.insertHeir(heir);
+  }
+
   Future<List<Relationship>> _getRelationships(Member member) async {
     return await _databaseHandler.getRelationships(member);
+  }
+
+  Future<void> _insertRelationship(Relationship relationship) async {
+    await _databaseHandler.insertRelationship(relationship);
+  }
+
+  Future<void> _deleteRelationships(Member member) async {
+    await _databaseHandler.deleteRelationships(member);
   }
 
   @override
@@ -43,6 +55,7 @@ class _HeirFormPageState extends State<HeirFormPage> {
     TextEditingController heirRelationshipController = TextEditingController();
     heirNames.add(heirNameController);
     heirBirthdates.add(heirBirthdateController);
+    heirRelationships.add(heirRelationshipController);
 
     if (relationship != null) {
       heirNameController.text = relationship.heirName;
@@ -82,6 +95,7 @@ class _HeirFormPageState extends State<HeirFormPage> {
                   context: context,
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
+                  initialDate: DateTime.now(),
                 );
                 heirBirthdateController.text =
                     birthdate.toString().split(' ')[0];
@@ -179,17 +193,31 @@ class _HeirFormPageState extends State<HeirFormPage> {
             sliver: SliverToBoxAdapter(
               child: Center(
                   child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    var relationships = <Relationship>[];
                     print('form complete');
                     for (int i = 0; i < heirCards.length; i++) {
                       Heir heir = Heir(
-                        heirKey: 0,
+                        heirKey: -1,
                         heirName: heirNames[i].text,
                         heirDateOfBirth: heirBirthdates[i].text,
                       );
+                      heir.heirKey = await _insertHeir(heir);
                       print(heir);
+                      relationships.add(Relationship(
+                        heirKey: heir.heirKey,
+                        heirName: heirNames[i].text,
+                        heirDateOfBirth: heirBirthdates[i].text,
+                        mid: member.mid,
+                        heirRelationship: heirRelationships[i].text,
+                      ));
                     }
+                    _deleteRelationships(member);
+                    relationships
+                        .forEach((element) => _insertRelationship(element));
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   } else {
                     print('form not complete');
                   }

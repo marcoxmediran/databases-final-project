@@ -40,6 +40,14 @@ class _QueryState extends State<Query> {
         children: [
           FloatingActionButton.extended(
             onPressed: () async {
+              await _databaseHandler.deleteTables();
+            },
+            icon: const Icon(Icons.terminal_outlined),
+            label: const Text('Delete All'),
+          ),
+          const SizedBox(width: 20),
+          FloatingActionButton.extended(
+            onPressed: () async {
               var members = await _databaseHandler.getMembers();
               var employers = await _databaseHandler.getEmployers();
               var heirs = await _databaseHandler.getHeirs();

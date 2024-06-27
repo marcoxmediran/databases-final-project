@@ -23,8 +23,6 @@ class Employment extends Employer {
   Map<String, dynamic> toMap() {
     return {
       'employerKey': employerKey,
-      'employerName': employerName,
-      'employerAddress': employerAddress,
       'mid': mid,
       'isCurrentEmployment': isCurrentEmployment,
       'occupation': occupation,

@@ -21,6 +21,18 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
   final DatabaseHandler _databaseHandler = DatabaseHandler();
   int previousEmployments = 0;
 
+  Future<int> _insertEmployer(Employer employer) async {
+    return await _databaseHandler.insertEmployer(employer);
+  }
+
+  Future<void> _insertEmployment(Employment employment) async {
+    await _databaseHandler.insertEmployment(employment);
+  }
+
+  Future<void> _deleteEmployments(Member member) async {
+    await _databaseHandler.deleteEmployments(member);
+  }
+
   Future<List<Employment>> _getEmployment(Member member) async {
     return await _databaseHandler.getEmployment(member);
   }
@@ -49,13 +61,18 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
   var employmentCards = <Card>[];
 
   Card EmploymentCard(Employment? employment) {
-    var employerNameController = TextEditingController();
-    var employerAddressController = TextEditingController();
-    var isCurrentController = SingleValueDropDownController();
-    var occupationController = TextEditingController();
-    var statusController = SingleValueDropDownController();
-    var incomeController = TextEditingController();
-    var employmentDateController = TextEditingController();
+    final TextEditingController employerNameController =
+        TextEditingController();
+    final TextEditingController employerAddressController =
+        TextEditingController();
+    final SingleValueDropDownController isCurrentController =
+        SingleValueDropDownController();
+    final TextEditingController occupationController = TextEditingController();
+    final SingleValueDropDownController statusController =
+        SingleValueDropDownController();
+    final TextEditingController incomeController = TextEditingController();
+    final TextEditingController employmentDateController =
+        TextEditingController();
     employerNames.add(employerNameController);
     employerAddresses.add(employerAddressController);
     isCurrentEmployment.add(isCurrentController);
@@ -78,6 +95,18 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
       employmentDateController.text = employment.dateEmployed;
     }
 
+    @override
+    void dispose() {
+      employerNameController.dispose();
+      employerAddressController.dispose();
+      isCurrentController.dispose();
+      occupationController.dispose();
+      statusController.dispose();
+      incomeController.dispose();
+      employmentDateController.dispose();
+      super.dispose();
+    }
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -91,7 +120,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Employer Name',
@@ -103,7 +131,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Employer Address',
@@ -130,7 +157,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Occupation',
@@ -172,7 +198,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               readOnly: true,
               onTap: () async {
                 DateTime? birthdate = await showDatePicker(
@@ -267,14 +292,34 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     print('form complete');
+                    var employments = <Employment>[];
                     for (int i = 0; i < employmentCards.length; i++) {
-                      Employer newEmployer = Employer(
+                      Employer employer = Employer(
                         employerKey: 0,
                         employerName: employerNames[i].text,
                         employerAddress: employerAddresses[i].text,
                       );
-                      print(newEmployer);
+                      employer.employerKey = await _insertEmployer(employer);
+                      print(employer);
+                      employments.add(Employment(
+                        employerKey: employer.employerKey,
+                        employerName: employerNames[i].text,
+                        employerAddress: employerAddresses[i].text,
+                        mid: member.mid,
+                        isCurrentEmployment:
+                            isCurrentEmployment[i].dropDownValue?.value,
+                        occupation: occupations[i].text,
+                        employmentStatus:
+                            employmentStatus[i].dropDownValue?.value,
+                        totalMonthlyIncome: incomes[i].text,
+                        dateEmployed: employmentDates[i].text,
+                      ));
                     }
+                    _deleteEmployments(member);
+                    employments
+                        .forEach((element) => _insertEmployment(element));
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   } else {
                     print('form not complete');
                   }

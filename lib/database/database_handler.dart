@@ -27,7 +27,7 @@ class DatabaseHandler {
       path,
       onCreate: _onCreate,
       version: 1,
-      onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
+      //onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
     );
   }
 
@@ -137,20 +137,36 @@ class DatabaseHandler {
     );
   }
 
-  Future<void> insertEmployer(Employer employer) async {
+  Future<int> insertEmployer(Employer employer) async {
     final db = await _databaseHandler.database;
     await db.insert(
       'EMPLOYERS',
       employer.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
+    final List<Map<String, dynamic>> maps = await db.query(
+      'EMPLOYERS',
+      where: 'employerName = ? AND employerAddress = ?',
+      whereArgs: [employer.employerName, employer.employerAddress],
+      limit: 1,
+    );
+    return maps[0]['employerKey'];
   }
 
-  Future<void> insertHeir(Heir heir) async {
+  Future<int> insertHeir(Heir heir) async {
     final db = await _databaseHandler.database;
     await db.insert(
       'HEIRS',
       heir.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
+    final List<Map<String, dynamic>> maps = await db.query(
+      'HEIRS',
+      where: 'heirName = ? AND heirDateOfBirth = ?',
+      whereArgs: [heir.heirName, heir.heirDateOfBirth],
+      limit: 1,
+    );
+    return maps[0]['heirKey'];
   }
 
   Future<List<Member>> getMembers() async {
@@ -170,12 +186,30 @@ class DatabaseHandler {
     final mid = member.mid;
     final List<Map<String, dynamic>> maps = await db.query(
       'EMPLOYERS NATURAL JOIN EMPLOYMENT',
-      where: '"mid" = ?',
+      where: 'mid = ?',
       whereArgs: [mid],
       orderBy: 'dateEmployed DESC',
     );
     return List.generate(
         maps.length, (index) => Employment.fromMap(maps[index]));
+  }
+
+  Future<void> deleteEmployments(Member member) async {
+    final db = await _databaseHandler.database;
+    await db.delete(
+      'EMPLOYMENT',
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
+  }
+
+  Future<void> insertEmployment(Employment employment) async {
+    final db = await _databaseHandler.database;
+    await db.insert(
+      'EMPLOYMENT',
+      employment.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
   }
 
   Future<List<Heir>> getHeirs() async {
@@ -194,6 +228,24 @@ class DatabaseHandler {
     );
     return List.generate(
         maps.length, (index) => Relationship.fromMap(maps[index]));
+  }
+
+  Future<void> deleteRelationships(Member member) async {
+    final db = await _databaseHandler.database;
+    await db.delete(
+      'HEIR_RELATIONSHIPS',
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
+  }
+
+  Future<void> insertRelationship(Relationship relationship) async {
+    final db = await _databaseHandler.database;
+    await db.insert(
+      'HEIR_RELATIONSHIPS',
+      relationship.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
   }
 
   Future<void> deleteAllRows() async {
