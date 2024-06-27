@@ -1,9 +1,7 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
-import 'package:databases_final_project/ui/employment_form.dart';
 import 'package:databases_final_project/ui/employment_builder.dart';
 import 'package:databases_final_project/ui/form.dart';
-import 'package:databases_final_project/ui/heir_form.dart';
 import 'package:databases_final_project/ui/relationship_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -37,77 +35,6 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context)),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Confirm Deletion'),
-                      content: const Text(
-                          'Are you sure you want to delete this member?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await _databaseHandler.deleteMember(member);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Yes'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.delete),
-              ),
-              FilledButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                EmploymentFormPage(member: member)));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    child: Text('Employment'),
-                  )),
-              const SizedBox(width: 8),
-              FilledButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                HeirFormPage(member: member)));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    child: Text('Heirs'),
-                  )),
-              const SizedBox(width: 8),
-              FilledButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FormPage(
-                                  member: member,
-                                )));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    child: Text('Edit'),
-                  )),
-              const SizedBox(width: 16),
-            ],
             flexibleSpace: FlexibleSpaceBar(
               title: Text(member.memberName),
               background: Column(
@@ -122,12 +49,64 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
             ),
           ),
           SliverToBoxAdapter(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 64),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Confirm Deletion'),
+                          content: const Text(
+                              'Are you sure you want to delete this member?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await _databaseHandler.deleteMember(member);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Yes'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.delete_outline),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FormPage(
+                                    member: member,
+                                  )));
+                    },
+                    icon: const Icon(Icons.edit_outlined),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
             child: Padding(
               padding:
                   EdgeInsets.only(left: widgetSpacing, right: widgetSpacing),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 64),
                   const SizedBox(height: 8),
                   Flex(
                     direction: isWidescreen ? Axis.horizontal : Axis.vertical,
@@ -146,7 +125,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: SizedBox(
-                          height: 400,
+                          height: 450,
                           width: 360,
                           child: Padding(
                             padding: const EdgeInsets.all(20),
@@ -192,7 +171,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                           ],
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        height: 400,
+                        height: 450,
                         width: 360,
                         child: Padding(
                           padding: const EdgeInsets.all(20),
@@ -233,13 +212,13 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                         : MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        height: 400,
+                        height: 450,
                         width: 360,
                         child: EmploymentBuilder(member: member),
                       ),
                       const SizedBox(height: 32, width: 32),
                       SizedBox(
-                        height: 400,
+                        height: 450,
                         width: 360,
                         child: RelationshipBuilder(member: member),
                       ),

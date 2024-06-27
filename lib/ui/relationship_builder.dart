@@ -1,6 +1,7 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/models/relationship.dart';
+import 'package:databases_final_project/ui/heir_form.dart';
 import 'package:flutter/material.dart';
 
 class RelationshipBuilder extends StatefulWidget {
@@ -77,6 +78,22 @@ class _RelationshipBuilderState extends State<RelationshipBuilder> {
                       },
                     );
                   }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 8,
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              HeirFormPage(member: widget.member)));
+                },
+                icon: const Icon(Icons.add),
+              ),
             ),
           ],
         ),

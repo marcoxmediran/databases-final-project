@@ -3,10 +3,8 @@ import 'package:databases_final_project/models/employer.dart';
 import 'package:databases_final_project/models/employment.dart';
 import 'package:databases_final_project/models/heir.dart';
 import 'package:databases_final_project/models/relationship.dart';
-import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHandler {
   // Singleton pattern
@@ -16,9 +14,6 @@ class DatabaseHandler {
 
   Database? _database;
   Future<Database> get database async {
-    if (kIsWeb) {
-      databaseFactory = databaseFactoryFfiWeb;
-    }
     if (_database != null) {
       return _database!;
     }

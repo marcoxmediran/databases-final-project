@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,19 +16,20 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   final _formKey = GlobalKey<FormState>();
   final DatabaseHandler _databaseHandler = DatabaseHandler();
-  final TextEditingController _occupationalStatusController =
-      TextEditingController();
-  final TextEditingController _frequencyOfPaymentController =
-      TextEditingController();
-  final TextEditingController _membershipCategoryController =
-      TextEditingController();
+  final SingleValueDropDownController _occupationalStatusController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController _frequencyOfPaymentController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController _membershipCategoryController =
+      SingleValueDropDownController();
   final TextEditingController _memberNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _spouseNameController = TextEditingController();
-  final TextEditingController _sexController = TextEditingController();
-  final TextEditingController _maritalStatusController =
-      TextEditingController();
+  final SingleValueDropDownController _sexController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController _maritalStatusController =
+      SingleValueDropDownController();
   final TextEditingController _citizenshipController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
@@ -41,8 +43,8 @@ class _FormPageState extends State<FormPage> {
       TextEditingController();
   final TextEditingController _presentAddressController =
       TextEditingController();
-  final TextEditingController _preferredAddressController =
-      TextEditingController();
+  final SingleValueDropDownController _preferredAddressController =
+      SingleValueDropDownController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +52,20 @@ class _FormPageState extends State<FormPage> {
     var spacing = max(MediaQuery.sizeOf(context).width / 6, 16).toDouble();
 
     if (member != null) {
-      _occupationalStatusController.text = member.occupationalStatus;
-      _frequencyOfPaymentController.text = member.frequencyOfPayment;
-      _membershipCategoryController.text = member.membershipType;
+      _occupationalStatusController.setDropDown(DropDownValueModel(
+          name: member.occupationalStatus, value: member.occupationalStatus));
+      _frequencyOfPaymentController.setDropDown(DropDownValueModel(
+          name: member.frequencyOfPayment, value: member.frequencyOfPayment));
+      _membershipCategoryController.setDropDown(DropDownValueModel(
+          name: member.membershipType, value: member.membershipType));
       _memberNameController.text = member.memberName;
       _motherNameController.text = member.motherName;
       _fatherNameController.text = member.fatherName;
       _spouseNameController.text = member.spouseName;
-      _sexController.text = member.sex;
-      _maritalStatusController.text = member.maritalStatus;
+      _sexController
+          .setDropDown(DropDownValueModel(name: member.sex, value: member.sex));
+      _maritalStatusController.setDropDown(DropDownValueModel(
+          name: member.maritalStatus, value: member.maritalStatus));
       _citizenshipController.text = member.citizenship;
       _heightController.text = member.height;
       _weightController.text = member.weight;
@@ -69,7 +76,8 @@ class _FormPageState extends State<FormPage> {
       _placeOfBirthController.text = member.placeOfBirth;
       _permanentAddressController.text = member.permanentAddress;
       _presentAddressController.text = member.presentAddress;
-      _preferredAddressController.text = member.preferredAddress;
+      _preferredAddressController.setDropDown(DropDownValueModel(
+          name: member.preferredAddress, value: member.preferredAddress));
     }
 
     return Scaffold(
@@ -99,80 +107,65 @@ class _FormPageState extends State<FormPage> {
                   const Text('Membership Category',
                       style: TextStyle(fontSize: 26)),
                   _customSpacer(),
-                  DropdownButtonFormField(
-                    value: member != null
-                        ? _occupationalStatusController.text
-                        : null,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Employed', child: Text('Employed')),
-                      DropdownMenuItem(
-                          value: 'Unemployed', child: Text('Unemployed')),
+                  DropDownTextField(
+                    controller: _occupationalStatusController,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'Employed', value: 'Employed'),
+                      DropDownValueModel(
+                          name: 'Unemployed', value: 'Unemployed'),
                     ],
-                    onChanged: (value) =>
-                        _occupationalStatusController.text = value!,
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'This field is required'
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
+                    textFieldDecoration: const InputDecoration(
                       labelText: 'Occupational Status',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   _customSpacer(),
-                  DropdownButtonFormField(
-                    value: member != null
-                        ? _frequencyOfPaymentController.text
-                        : null,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Monthly', child: Text('Monthly')),
-                      DropdownMenuItem(
-                          value: 'Quarterly', child: Text('Quarterly')),
+                  DropDownTextField(
+                    controller: _frequencyOfPaymentController,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'Monthly', value: 'Monthly'),
+                      DropDownValueModel(name: 'Quarterly', value: 'Quarterly'),
                     ],
-                    onChanged: (value) =>
-                        _frequencyOfPaymentController.text = value!,
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'This field is required'
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
+                    textFieldDecoration: const InputDecoration(
                       labelText: 'Frequency of Payment',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   _customSpacer(),
-                  DropdownButtonFormField(
-                    value: member != null
-                        ? _membershipCategoryController.text
-                        : null,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Mandatory Employed',
-                          child: Text('Mandatory Employed')),
-                      DropdownMenuItem(
-                          value: 'Mandatory OFW', child: Text('Mandatory OFW')),
-                      DropdownMenuItem(
-                          value: 'Mandatory Self-Employed',
-                          child: Text('Mandatory Self-Employed')),
-                      DropdownMenuItem(
-                          value: 'Voluntary Employed',
-                          child: Text('Voluntary Employed')),
-                      DropdownMenuItem(
-                          value: 'Voluntary OFW', child: Text('Voluntary OFW')),
-                      DropdownMenuItem(
-                          value: 'Voluntary Self-Employed',
-                          child: Text('Voluntary Self-Employed')),
+                  DropDownTextField(
+                    controller: _membershipCategoryController,
+                    dropDownList: const [
+                      DropDownValueModel(
+                          name: 'Mandatory Employed',
+                          value: 'Mandatory Employed'),
+                      DropDownValueModel(
+                          name: 'Mandatory OFW', value: 'Mandatory OFW'),
+                      DropDownValueModel(
+                          name: 'Mandatory Self-Employed',
+                          value: 'Mandatory Self-Employed'),
+                      DropDownValueModel(
+                          name: 'Voluntary Employed',
+                          value: 'Voluntary Employed'),
+                      DropDownValueModel(
+                          name: 'Voluntary Self-Employed',
+                          value: 'Voluntary Self-Employed'),
+                      DropDownValueModel(
+                          name: 'Voluntary OFW', value: 'Voluntary OFW'),
                     ],
-                    onChanged: (value) =>
-                        _membershipCategoryController.text = value!,
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'This field is required'
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      labelText: 'Membership Category',
+                    textFieldDecoration: const InputDecoration(
+                      labelText: 'Frequency of Payment',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -225,44 +218,22 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   _customSpacer(),
-                  DropdownButtonFormField(
-                    value: member != null ? _sexController.text : null,
-                    items: const [
-                      DropdownMenuItem(value: 'Male', child: Text('Male')),
-                      DropdownMenuItem(value: 'Female', child: Text('Female')),
+                  DropDownTextField(
+                    controller: _maritalStatusController,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'Single', value: 'Single'),
+                      DropDownValueModel(name: 'Married', value: 'Married'),
+                      DropDownValueModel(name: 'Annulled', value: 'Annulled'),
+                      DropDownValueModel(
+                          name: 'Legally Separated',
+                          value: 'Legally Separated'),
                     ],
-                    onChanged: (value) => _sexController.text = value!,
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'This field is required'
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      labelText: 'Sex',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  _customSpacer(),
-                  DropdownButtonFormField(
-                    value:
-                        member != null ? _maritalStatusController.text : null,
-                    items: const [
-                      DropdownMenuItem(value: 'Single', child: Text('Single')),
-                      DropdownMenuItem(
-                          value: 'Married', child: Text('Married')),
-                      DropdownMenuItem(
-                          value: 'Annulled', child: Text('Annulled')),
-                      DropdownMenuItem(
-                          value: 'Legally Separated',
-                          child: Text('Legally Separated')),
-                    ],
-                    onChanged: (value) =>
-                        _maritalStatusController.text = value!,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      labelText: 'Marital Status',
+                    textFieldDecoration: const InputDecoration(
+                      labelText: 'Frequency of Payment',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -434,26 +405,21 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   _customSpacer(),
-                  DropdownButtonFormField(
-                    value: member != null
-                        ? _preferredAddressController.text
-                        : null,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Permanent Address',
-                          child: Text('Permanent Address')),
-                      DropdownMenuItem(
-                          value: 'Present Address',
-                          child: Text('Present Address')),
+                  DropDownTextField(
+                    controller: _preferredAddressController,
+                    dropDownList: const [
+                      DropDownValueModel(
+                          name: 'Permanent Address',
+                          value: 'Permanent Address'),
+                      DropDownValueModel(
+                          name: 'Present Address', value: 'Present Address'),
                     ],
-                    onChanged: (value) =>
-                        _preferredAddressController.text = value!,
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'This field is required'
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      labelText: 'Preferred Address',
+                    textFieldDecoration: const InputDecoration(
+                      labelText: 'Frequency of Payment',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -465,27 +431,30 @@ class _FormPageState extends State<FormPage> {
                       if (_formKey.currentState!.validate()) {
                         Member toInsert = Member(
                           mid: member == null ? 0 : member.mid,
-                          occupationalStatus:
-                              _occupationalStatusController.text,
-                          membershipType: _membershipCategoryController.text,
+                          occupationalStatus: _occupationalStatusController
+                              .dropDownValue?.value,
+                          membershipType: _membershipCategoryController
+                              .dropDownValue?.value,
                           memberName: _memberNameController.text,
                           motherName: _motherNameController.text,
                           fatherName: _fatherNameController.text,
                           spouseName: _spouseNameController.text,
                           dateOfBirth: _birthdateController.text,
                           placeOfBirth: _placeOfBirthController.text,
-                          sex: _sexController.text,
+                          sex: _sexController.dropDownValue?.value,
                           height: _heightController.text,
                           weight: _weightController.text,
-                          maritalStatus: _maritalStatusController.text,
+                          maritalStatus:
+                              _maritalStatusController.dropDownValue?.value,
                           citizenship: _citizenshipController.text,
-                          frequencyOfPayment:
-                              _frequencyOfPaymentController.text,
+                          frequencyOfPayment: _frequencyOfPaymentController
+                              .dropDownValue?.value,
                           tin: _tinController.text,
                           sss: _sssController.text,
                           permanentAddress: _permanentAddressController.text,
                           presentAddress: _presentAddressController.text,
-                          preferredAddress: _preferredAddressController.text,
+                          preferredAddress:
+                              _preferredAddressController.dropDownValue?.value,
                           cellphoneNumber: _contactNumberController.text,
                           dateOfRegistration: member == null
                               ? DateTime.now().toString().split(' ')[0]

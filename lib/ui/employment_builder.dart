@@ -1,6 +1,7 @@
 import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/models/employment.dart';
+import 'package:databases_final_project/ui/employment_form.dart';
 import 'package:flutter/material.dart';
 
 class EmploymentBuilder extends StatefulWidget {
@@ -76,6 +77,22 @@ class _EmploymentBuilderState extends State<EmploymentBuilder> {
                       },
                     );
                   }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 8,
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              EmploymentFormPage(member: widget.member)));
+                },
+                icon: const Icon(Icons.add),
+              ),
             ),
           ],
         ),

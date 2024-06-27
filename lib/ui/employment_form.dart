@@ -4,6 +4,7 @@ import 'package:databases_final_project/database/database_handler.dart';
 import 'package:databases_final_project/models/employment.dart';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/models/employer.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,35 +41,39 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
 
   var employerNames = <TextEditingController>[];
   var employerAddresses = <TextEditingController>[];
-  var isCurrentEmployment = <String>[];
+  var isCurrentEmployment = <SingleValueDropDownController>[];
   var occupations = <TextEditingController>[];
-  var employmentStatus = <String>[];
+  var employmentStatus = <SingleValueDropDownController>[];
   var incomes = <TextEditingController>[];
   var employmentDates = <TextEditingController>[];
   var employmentCards = <Card>[];
 
   Card EmploymentCard(Employment? employment) {
-    TextEditingController employerNameController = TextEditingController();
-    TextEditingController employerAddressController = TextEditingController();
-    String isCurrent = '';
-    TextEditingController occupationController = TextEditingController();
-    String status = '';
-    TextEditingController incomeController = TextEditingController();
-    TextEditingController employmentDateController = TextEditingController();
+    var employerNameController = TextEditingController();
+    var employerAddressController = TextEditingController();
+    var isCurrentController = SingleValueDropDownController();
+    var occupationController = TextEditingController();
+    var statusController = SingleValueDropDownController();
+    var incomeController = TextEditingController();
+    var employmentDateController = TextEditingController();
     employerNames.add(employerNameController);
     employerAddresses.add(employerAddressController);
-    isCurrentEmployment.add(isCurrent);
+    isCurrentEmployment.add(isCurrentController);
     occupations.add(occupationController);
-    employmentStatus.add(status);
+    employmentStatus.add(statusController);
     incomes.add(incomeController);
     employmentDates.add(employmentDateController);
 
     if (employment != null) {
       employerNameController.text = employment.employerName;
       employerAddressController.text = employment.employerAddress;
-      isCurrent = employment.isCurrentEmployment;
+      isCurrentController.setDropDown(DropDownValueModel(
+          name: employment.isCurrentEmployment,
+          value: employment.isCurrentEmployment));
       occupationController.text = employment.occupation;
-      status = employment.employmentStatus;
+      statusController.setDropDown(DropDownValueModel(
+          name: employment.employmentStatus,
+          value: employment.employmentStatus));
       incomeController.text = employment.totalMonthlyIncome;
       employmentDateController.text = employment.dateEmployed;
     }
@@ -105,20 +110,16 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               ),
             ),
             _customSpacer(),
-            DropdownButtonFormField(
-              //value: employment?.isCurrentEmployment,
-              items: const [
-                DropdownMenuItem(value: 'Yes', child: Text('Yes')),
-                DropdownMenuItem(value: 'No', child: Text('No')),
+            DropDownTextField(
+              controller: isCurrentController,
+              dropDownList: const [
+                DropDownValueModel(name: 'Yes', value: 'Yes'),
+                DropDownValueModel(name: 'No', value: 'No'),
               ],
-              onChanged: (value) => setState(() {
-                isCurrent = value!;
-              }),
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: const InputDecoration(
+              textFieldDecoration: const InputDecoration(
                 labelText: 'Currently Employed?',
                 border: OutlineInputBorder(),
               ),
@@ -136,25 +137,19 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               ),
             ),
             _customSpacer(),
-            DropdownButtonFormField(
-              //value: employment?.employmentStatus,
-              items: const [
-                DropdownMenuItem(value: 'Permanent', child: Text('Permanent')),
-                DropdownMenuItem(value: 'Casual', child: Text('Casual')),
-                DropdownMenuItem(
-                    value: 'Contractual', child: Text('Contractual')),
-                DropdownMenuItem(
-                    value: 'Project-Based', child: Text('Project-Based')),
-                DropdownMenuItem(value: 'Part-Time', child: Text('Part-Time')),
+            DropDownTextField(
+              controller: statusController,
+              dropDownList: const [
+                DropDownValueModel(name: 'Permanent', value: 'Permanent'),
+                DropDownValueModel(name: 'Casual', value: 'Casual'),
+                DropDownValueModel(name: 'Contractual', value: 'Contractual'),
+                DropDownValueModel(name: 'Project', value: 'Project-Based'),
+                DropDownValueModel(name: 'Part-Time', value: 'Part-Time'),
               ],
-              onChanged: (value) => setState(() {
-                status = value!;
-              }),
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: const InputDecoration(
+              textFieldDecoration: const InputDecoration(
                 labelText: 'Employment Status',
                 border: OutlineInputBorder(),
               ),
@@ -165,7 +160,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Total Monthly Income (Php)',
