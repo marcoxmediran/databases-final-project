@@ -82,7 +82,23 @@ class _HomeState extends State<Home> {
                 });
               },
             ),
-            Expanded(child: screen),
+            Expanded(
+              child: Scaffold(
+                body: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      title: Text(destinations[screenIndex].label),
+                    ),
+                    SliverFillRemaining(
+                      fillOverscroll: true,
+                      hasScrollBody: false,
+                      child: screen,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            //Expanded(child: screen),
           ],
         ),
       ),
@@ -106,6 +122,33 @@ class _HomeState extends State<Home> {
                 ? Brightness.dark
                 : Brightness.light,
       ),
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar.large(
+              title: Text(destinations[screenIndex].label),
+            ),
+            SliverFillRemaining(child: screen),
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: screenIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              screenIndex = index;
+            });
+          },
+          destinations: destinations.map((ScaffoldDestination destination) {
+            return NavigationDestination(
+              label: destination.label,
+              icon: destination.icon,
+              selectedIcon: destination.selectedIcon,
+              tooltip: destination.label,
+            );
+          }).toList(),
+        ),
+      ),
+      /*
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -130,6 +173,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      */
     );
   }
 }
