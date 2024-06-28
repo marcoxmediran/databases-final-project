@@ -83,18 +83,22 @@ class _HomeState extends State<Home> {
               },
             ),
             Expanded(
-              child: Scaffold(
-                body: CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      title: Text(destinations[screenIndex].label),
-                    ),
-                    SliverFillRemaining(
-                      fillOverscroll: true,
-                      hasScrollBody: false,
-                      child: screen,
-                    ),
-                  ],
+              child: Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(32)),
+                child: Scaffold(
+                  body: CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                        title: Text(destinations[screenIndex].label),
+                      ),
+                      SliverFillRemaining(
+                        fillOverscroll: true,
+                        hasScrollBody: false,
+                        child: screen,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -128,7 +132,9 @@ class _HomeState extends State<Home> {
             SliverAppBar.large(
               title: Text(destinations[screenIndex].label),
             ),
-            SliverFillRemaining(child: screen),
+            SliverFillRemaining(
+              child: screen,
+            ),
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -148,32 +154,6 @@ class _HomeState extends State<Home> {
           }).toList(),
         ),
       ),
-      /*
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(destinations[screenIndex].label),
-          ),
-          body: screen,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: screenIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                screenIndex = index;
-              });
-            },
-            destinations: destinations.map((ScaffoldDestination destination) {
-              return NavigationDestination(
-                label: destination.label,
-                icon: destination.icon,
-                selectedIcon: destination.selectedIcon,
-                tooltip: destination.label,
-              );
-            }).toList(),
-          ),
-        ),
-      ),
-      */
     );
   }
 }

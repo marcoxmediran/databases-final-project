@@ -64,14 +64,55 @@ class _EmploymentBuilderState extends State<EmploymentBuilder> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (contex, index) {
                         Employment employment = snapshot.data![index];
-                        return InkWell(
-                          onTap: () => print(employment),
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              child: Icon(Icons.apartment),
+                        return Tooltip(
+                          message: 'Tap for more info',
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('Dismiss'))
+                                        ],
+                                        content: SizedBox(
+                                          width: 400,
+                                          height: 220,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(employment.employerName,
+                                                  style: const TextStyle(
+                                                      fontSize: 28)),
+                                              Text(employment.employerAddress,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87)),
+                                              const SizedBox(height: 32),
+                                              Column(
+                                                children: [
+                                                  Text(employment.getSummary()),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ));
+                            },
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.apartment),
+                              ),
+                              title: Text(employment.employerName),
+                              subtitle: Text(employment.occupation),
                             ),
-                            title: Text(employment.employerName),
-                            subtitle: Text(employment.occupation),
                           ),
                         );
                       },

@@ -9,6 +9,7 @@ class Member {
   final String fatherName;
   final String spouseName;
   final String dateOfBirth;
+  int age;
   final String placeOfBirth;
   final String sex;
   final String height;
@@ -34,6 +35,7 @@ class Member {
     required this.spouseName,
     required this.dateOfBirth,
     required this.placeOfBirth,
+    required this.age,
     required this.sex,
     required this.height,
     required this.weight,
@@ -85,6 +87,7 @@ class Member {
       fatherName: map['fatherName'] ?? '',
       spouseName: map['spouseName'] ?? '',
       dateOfBirth: map['dateOfBirth'] ?? '',
+      age: map['age'] ?? '',
       placeOfBirth: map['placeOfBirth'] ?? '',
       sex: map['sex'] ?? '',
       height: map['height'] ?? '',
@@ -111,7 +114,9 @@ class Member {
   }
 
   String getPrefferedAddress() {
-    return preferredAddress == 'PHA' ? presentAddress : permanentAddress;
+    return preferredAddress == 'Present Address'
+        ? presentAddress
+        : permanentAddress;
   }
 
   String getSpouse() {
@@ -132,6 +137,11 @@ class Member {
     } else {
       return Icon(Icons.face_2, size: size);
     }
+  }
+
+  int getAge(String birthdate) {
+    DateTime now = DateTime.now();
+    return now.difference(DateTime.parse(birthdate)).inDays ~/ 365.25;
   }
 
   @override

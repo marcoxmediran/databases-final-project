@@ -169,7 +169,8 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                 DropDownValueModel(name: 'Permanent', value: 'Permanent'),
                 DropDownValueModel(name: 'Casual', value: 'Casual'),
                 DropDownValueModel(name: 'Contractual', value: 'Contractual'),
-                DropDownValueModel(name: 'Project', value: 'Project-Based'),
+                DropDownValueModel(
+                    name: 'Project-Based', value: 'Project-Based'),
                 DropDownValueModel(name: 'Part-Time', value: 'Part-Time'),
               ],
               validator: (value) => (value == null || value.isEmpty)
@@ -291,7 +292,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                   child: ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    print('form complete');
                     var employments = <Employment>[];
                     for (int i = 0; i < employmentCards.length; i++) {
                       Employer employer = Employer(
@@ -300,7 +300,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                         employerAddress: employerAddresses[i].text,
                       );
                       employer.employerKey = await _insertEmployer(employer);
-                      print(employer);
                       employments.add(Employment(
                         employerKey: employer.employerKey,
                         employerName: employerNames[i].text,
@@ -320,8 +319,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                         .forEach((element) => _insertEmployment(element));
                     Navigator.pop(context);
                     Navigator.pop(context);
-                  } else {
-                    print('form not complete');
                   }
                 },
                 child: const Text('Submit'),

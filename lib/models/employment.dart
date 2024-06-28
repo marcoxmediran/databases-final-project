@@ -1,4 +1,6 @@
 import 'package:databases_final_project/models/employer.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Employment extends Employer {
   final int mid;
@@ -44,6 +46,26 @@ class Employment extends Employer {
       totalMonthlyIncome: map['totalMonthlyIncome'] ?? '',
       dateEmployed: map['dateEmployed'],
     );
+  }
+
+  String getSummary() {
+    return isCurrentEmployment == 'Yes'
+        ? 'Currently employed as ${isVowel(occupation) ? 'an' : 'a'} $occupation ($employmentStatus) at $employerName with a total monthly income of Php ${formatIncome()} on ${formatDateEmployed()}.'
+        : 'Was previously employed as ${isVowel(occupation) ? 'an' : 'a'} $occupation ($employmentStatus) at $employerName with a total monthly income of Php ${formatIncome()} on ${formatDateEmployed()}.';
+  }
+
+  String formatDateEmployed() {
+    return DateFormat.yMMMMd().format(DateTime.parse(dateEmployed));
+  }
+
+  String formatIncome() {
+    return NumberFormat('###,###.0#', 'en_US')
+        .format(int.parse(totalMonthlyIncome));
+  }
+
+  bool isVowel(String string) {
+    var vowels = ['a', 'e', 'i', 'o', 'u'];
+    return vowels.contains(string.toLowerCase().characters.first);
   }
 
   @override

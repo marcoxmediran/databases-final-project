@@ -165,7 +165,7 @@ class _FormPageState extends State<FormPage> {
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textFieldDecoration: const InputDecoration(
-                      labelText: 'Frequency of Payment',
+                      labelText: 'Membership Type',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -249,7 +249,7 @@ class _FormPageState extends State<FormPage> {
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textFieldDecoration: const InputDecoration(
-                      labelText: 'Frequency of Payment',
+                      labelText: 'Marital Status',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -435,7 +435,7 @@ class _FormPageState extends State<FormPage> {
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textFieldDecoration: const InputDecoration(
-                      labelText: 'Frequency of Payment',
+                      labelText: 'Preferred Address',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -456,6 +456,7 @@ class _FormPageState extends State<FormPage> {
                           fatherName: _fatherNameController.text,
                           spouseName: _spouseNameController.text,
                           dateOfBirth: _birthdateController.text,
+                          age: member == null ? 0 : member.age,
                           placeOfBirth: _placeOfBirthController.text,
                           sex: _sexController.dropDownValue?.value,
                           height: _heightController.text,

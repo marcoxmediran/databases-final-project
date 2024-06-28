@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:databases_final_project/models/member.dart';
 import 'package:databases_final_project/models/employer.dart';
 import 'package:databases_final_project/models/employment.dart';
 import 'package:databases_final_project/models/heir.dart';
 import 'package:databases_final_project/models/relationship.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -22,17 +24,18 @@ class DatabaseHandler {
   }
 
   Future<Database> _initDatabase() async {
-    var path = join(await getDatabasesPath(), 'database.db');
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    var path = join(documentsDirectory.path, 'database.db');
     return await openDatabase(
       path,
       onCreate: _onCreate,
       version: 1,
-      //onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
     );
   }
 
   Future<void> deleteTables() async {
-    final path = join(await getDatabasesPath(), 'database.db');
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, 'database.db');
     await deleteDatabase(path);
   }
 
@@ -171,7 +174,8 @@ class DatabaseHandler {
 
   Future<List<Member>> getMembers() async {
     final db = await _databaseHandler.database;
-    final List<Map<String, dynamic>> maps = await db.query('MEMBERS');
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        'SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age FROM MEMBERS;');
     return List.generate(maps.length, (index) => Member.fromMap(maps[index]));
   }
 

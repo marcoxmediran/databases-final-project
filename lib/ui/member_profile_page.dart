@@ -18,6 +18,7 @@ class MemberProfilePage extends StatefulWidget {
 
 class _MemberProfilePageState extends State<MemberProfilePage> {
   final DatabaseHandler _databaseHandler = DatabaseHandler();
+  final double textHeight = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
           SliverAppBar.large(
             pinned: true,
             floating: false,
+            centerTitle: true,
             expandedHeight: 256,
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -55,6 +57,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                 children: [
                   const SizedBox(height: 64),
                   IconButton(
+                    tooltip: 'Delete Member',
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -85,6 +88,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                   ),
                   const SizedBox(width: 8),
                   IconButton(
+                    tooltip: 'Edit Member',
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -140,19 +144,30 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                Text('MID: ${member.formatMid()}'),
-                                Text('TIN: ${member.tin}'),
-                                Text('SSS: ${member.sss}'),
+                                //Text(
+                                //    'MID: ${member.formatMid()}\nTIN: ${member.tin}\nSSS: ${member.sss}\nOccupational Status: ${member.occupationalStatus}\nMembership Category: ${member.membershipType}\nFrequency of Payment: ${member.frequencyOfPayment}\nDate of Registration: ${member.dateOfRegistration}\nAddress: ${member.getPrefferedAddress()}',
+                                //    style: const TextStyle(height: 2)),
+                                Text('MID: ${member.formatMid()}',
+                                    style: TextStyle(height: textHeight)),
+                                Text('TIN: ${member.tin}',
+                                    style: TextStyle(height: textHeight)),
+                                Text('SSS: ${member.sss}',
+                                    style: TextStyle(height: textHeight)),
                                 Text(
-                                    'Occupational Status: ${member.occupationalStatus}'),
+                                    'Occupational Status: ${member.occupationalStatus}',
+                                    style: TextStyle(height: textHeight)),
                                 Text(
-                                    'Membership Category: ${member.membershipType}'),
+                                    'Membership Category: ${member.membershipType}',
+                                    style: TextStyle(height: textHeight)),
                                 Text(
-                                    'Frequency of Payment: ${member.frequencyOfPayment}'),
+                                    'Frequency of Payment: ${member.frequencyOfPayment}',
+                                    style: TextStyle(height: textHeight)),
                                 Text(
-                                    'Date of Registration: ${member.dateOfRegistration}'),
+                                    'Date of Registration: ${member.dateOfRegistration}',
+                                    style: TextStyle(height: textHeight)),
                                 Text(
-                                    'Preffered Address: ${member.getPrefferedAddress()}'),
+                                    'Preffered Address: ${member.getPrefferedAddress()}',
+                                    style: TextStyle(height: textHeight)),
                                 const SizedBox(height: 16),
                               ],
                             ),
@@ -185,19 +200,32 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text('Name: ${member.memberName}'),
+                              Text('Name: ${member.memberName}',
+                                  style: TextStyle(height: textHeight)),
                               Text(
-                                  'Cellphone Number: ${member.cellphoneNumber}'),
-                              Text('Sex: ${member.sex}'),
-                              Text('Citizenship: ${member.citizenship}'),
-                              Text('Height: ${member.height}cm'),
-                              Text('Weight: ${member.weight}kg'),
-                              Text('Birthdate: ${member.dateOfBirth}'),
-                              Text('Place of Birth: ${member.placeOfBirth}'),
-                              Text('Marital Status: ${member.maritalStatus}'),
-                              Text('Mother\'s Name: ${member.motherName}'),
-                              Text('Father\'s Name: ${member.fatherName}'),
-                              Text('Spouse\'s Name: ${member.getSpouse()}'),
+                                  'Cellphone Number: ${member.cellphoneNumber}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Sex: ${member.sex}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Citizenship: ${member.citizenship}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Height: ${member.height}cm',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Weight: ${member.weight}kg',
+                                  style: TextStyle(height: textHeight)),
+                              Text(
+                                  'Birthdate: ${member.dateOfBirth} (${member.age} years old)',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Place of Birth: ${member.placeOfBirth}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Marital Status: ${member.maritalStatus}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Mother: ${member.motherName}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Father: ${member.fatherName}',
+                                  style: TextStyle(height: textHeight)),
+                              Text('Spouse: ${member.getSpouse()}',
+                                  style: TextStyle(height: textHeight)),
                             ],
                           ),
                         ),

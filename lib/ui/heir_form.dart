@@ -196,7 +196,6 @@ class _HeirFormPageState extends State<HeirFormPage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     var relationships = <Relationship>[];
-                    print('form complete');
                     for (int i = 0; i < heirCards.length; i++) {
                       Heir heir = Heir(
                         heirKey: -1,
@@ -204,7 +203,6 @@ class _HeirFormPageState extends State<HeirFormPage> {
                         heirDateOfBirth: heirBirthdates[i].text,
                       );
                       heir.heirKey = await _insertHeir(heir);
-                      print(heir);
                       relationships.add(Relationship(
                         heirKey: heir.heirKey,
                         heirName: heirNames[i].text,
@@ -218,8 +216,6 @@ class _HeirFormPageState extends State<HeirFormPage> {
                         .forEach((element) => _insertRelationship(element));
                     Navigator.pop(context);
                     Navigator.pop(context);
-                  } else {
-                    print('form not complete');
                   }
                 },
                 child: const Text('Submit'),

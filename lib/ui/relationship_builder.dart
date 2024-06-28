@@ -65,14 +65,16 @@ class _RelationshipBuilderState extends State<RelationshipBuilder> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (contex, index) {
                         Relationship relationship = snapshot.data![index];
-                        return InkWell(
-                          onTap: () => print(relationship),
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              child: Icon(Icons.apartment),
+                        return Tooltip(
+                          message: 'heirKey: ${relationship.formatKey()}',
+                          child: InkWell(
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.apartment),
+                              ),
+                              title: Text(relationship.heirName),
+                              subtitle: Text(relationship.heirRelationship),
                             ),
-                            title: Text(relationship.heirName),
-                            subtitle: Text(relationship.heirRelationship),
                           ),
                         );
                       },
