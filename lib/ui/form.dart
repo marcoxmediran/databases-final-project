@@ -49,7 +49,7 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     Member? member = widget.member;
-    var spacing = max(MediaQuery.sizeOf(context).width / 6, 16).toDouble();
+    var spacing = MediaQuery.sizeOf(context).width / 8.toDouble();
 
     if (member != null) {
       _occupationalStatusController.setDropDown(DropDownValueModel(

@@ -11,39 +11,83 @@ class EmployerBuilder extends StatefulWidget {
 
 class _EmployerBuilderState extends State<EmployerBuilder> {
   final DatabaseHandler _databaseHandler = DatabaseHandler();
+  final TextEditingController _searchController = TextEditingController();
+  late Future<List<Employer>> _employers;
 
   Future<List<Employer>> _getEmployers() async {
     return await _databaseHandler.getEmployers();
   }
 
+  Future<List<Employer>> _searchEmployers(String keyword) async {
+    return await _databaseHandler.searchEmployers(keyword);
+  }
+
+  Future searchEmployers(String keyword) async => setState(() {
+        _employers = _searchEmployers(keyword);
+      });
+
+  @override
+  void initState() {
+    super.initState();
+    _employers = _getEmployers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<Employer>>(
-          future: _getEmployers(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (contex, index) {
-                Employer employer = snapshot.data![index];
-                return InkWell(
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.apartment),
-                    ),
-                    title: Text(
-                        '${employer.employerName} - ${employer.employerAddress}'),
-                    subtitle: Text(employer.formatKey()),
-                  ),
-                );
-              },
-            );
-          }),
+      body: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(child: SizedBox(height: 8)),
+          SliverAppBar(
+            title: TextField(
+              controller: _searchController,
+              onChanged: (value) => searchEmployers(value),
+              decoration: InputDecoration(
+                hintText: 'Search employers',
+                filled: true,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 4),
+                  child: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.search)),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(128),
+                ),
+              ),
+            ),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          SliverFillRemaining(
+            child: FutureBuilder<List<Employer>>(
+                future: _employers,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (contex, index) {
+                      Employer employer = snapshot.data![index];
+                      return InkWell(
+                        onTap: () {},
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.apartment),
+                          ),
+                          title: Text(
+                              '${employer.employerName} - ${employer.employerAddress}'),
+                          subtitle: Text(employer.formatKey()),
+                        ),
+                      );
+                    },
+                  );
+                }),
+          ),
+        ],
+      ),
     );
   }
 }

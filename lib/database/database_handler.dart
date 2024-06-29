@@ -179,9 +179,27 @@ class DatabaseHandler {
     return List.generate(maps.length, (index) => Member.fromMap(maps[index]));
   }
 
+  Future<List<Member>> searchMembers(String keyword) async {
+    final db = await _databaseHandler.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        "SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age FROM MEMBERS WHERE LOWER(memberName) LIKE ? OR mid IN (?);",
+        ['%${keyword.toLowerCase()}%', keyword]);
+    return List.generate(maps.length, (index) => Member.fromMap(maps[index]));
+  }
+
   Future<List<Employer>> getEmployers() async {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query('EMPLOYERS');
+    return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
+  }
+
+  Future<List<Employer>> searchEmployers(String keyword) async {
+    final db = await _databaseHandler.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'EMPLOYERS',
+      where: 'LOWER(employerName) LIKE ? OR employerKey LIKE ?',
+      whereArgs: ['%${keyword.toLowerCase()}%', keyword],
+    );
     return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
   }
 
@@ -219,6 +237,16 @@ class DatabaseHandler {
   Future<List<Heir>> getHeirs() async {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query('HEIRS');
+    return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
+  }
+
+  Future<List<Heir>> searchHeirs(String keyword) async {
+    final db = await _databaseHandler.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'HEIRS',
+      where: 'LOWER(heirName) LIKE ? OR heirKey LIKE ?',
+      whereArgs: ['%${keyword.toLowerCase()}%', keyword],
+    );
     return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
   }
 
