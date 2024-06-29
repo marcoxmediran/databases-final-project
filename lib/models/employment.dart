@@ -59,7 +59,7 @@ class Employment extends Employer {
   }
 
   String formatIncome() {
-    return NumberFormat('###,###.0#', 'en_US')
+    return NumberFormat('###,###.00#', 'en_US')
         .format(int.parse(totalMonthlyIncome));
   }
 

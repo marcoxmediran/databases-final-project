@@ -72,7 +72,46 @@ class _HeirState extends State<HeirBuilder> {
                     itemBuilder: (contex, index) {
                       Heir heir = snapshot.data![index];
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('Dismiss'))
+                                    ],
+                                    content: FittedBox(
+                                      child: SizedBox(
+                                        width: 400,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(heir.heirName,
+                                                style: const TextStyle(
+                                                    fontSize: 28)),
+                                            Text(heir.formatKey(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black87)),
+                                            const SizedBox(height: 32),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                    'Birthdate: ${heir.heirDateOfBirth}'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ));
+                        },
                         child: ListTile(
                           leading: const CircleAvatar(
                             child: Icon(Icons.person),

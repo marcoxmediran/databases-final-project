@@ -51,6 +51,10 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
             ),
           ),
           SliverToBoxAdapter(
+              child: Center(
+                  child: Text(member.formatMid(),
+                      style: const TextStyle(fontSize: 16)))),
+          SliverToBoxAdapter(
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

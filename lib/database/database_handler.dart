@@ -216,6 +216,16 @@ class DatabaseHandler {
         maps.length, (index) => Employment.fromMap(maps[index]));
   }
 
+  Future<List<Map>> countEmployees(Employer employer) async {
+    final db = await _databaseHandler.database;
+    final employerKey = employer.employerKey;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT isCurrentEmployment, COUNT(*) FROM EMPLOYMENT WHERE employerKey = ? GROUP BY isCurrentEmployment ORDER BY isCurrentEmployment DESC;',
+      [employerKey],
+    );
+    return maps;
+  }
+
   Future<void> deleteEmployments(Member member) async {
     final db = await _databaseHandler.database;
     await db.delete(
