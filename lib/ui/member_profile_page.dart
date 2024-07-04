@@ -32,13 +32,12 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
           SliverAppBar.large(
             pinned: true,
             floating: false,
-            centerTitle: true,
             expandedHeight: 256,
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context)),
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(member.memberName),
+              title: Center(child: Text(member.memberName)),
               background: Column(
                 children: [
                   const SizedBox(height: 64),

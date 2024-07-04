@@ -166,7 +166,7 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
             DropDownTextField(
               controller: statusController,
               dropDownList: const [
-                DropDownValueModel(name: 'Permanent', value: 'Permanent'),
+                DropDownValueModel(name: 'Regular', value: 'Regular'),
                 DropDownValueModel(name: 'Casual', value: 'Casual'),
                 DropDownValueModel(name: 'Contractual', value: 'Contractual'),
                 DropDownValueModel(

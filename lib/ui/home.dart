@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:databases_final_project/ui/employer_builder.dart';
 import 'package:databases_final_project/ui/heir_builder.dart';
-import 'package:databases_final_project/ui/loading_page.dart';
 import 'package:databases_final_project/ui/member_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:databases_final_project/ui/query.dart';
+import 'package:databases_final_project/ui/problems.dart';
 import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
@@ -24,19 +21,16 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     switch (screenIndex) {
       case 0:
-        screen = const LoadingPage();
-        break;
-      case 1:
         screen = const MemberBuilder();
         break;
-      case 2:
+      case 1:
         screen = const EmployerBuilder();
         break;
-      case 3:
+      case 2:
         screen = const HeirBuilder();
         break;
-      case 4:
-        screen = const Query();
+      case 3:
+        screen = const ProblemsPage();
         break;
       default:
         throw UnimplementedError('No widget for Screen $screenIndex');
@@ -139,9 +133,8 @@ class ScaffoldDestination {
 }
 
 const List<ScaffoldDestination> destinations = <ScaffoldDestination>[
-  ScaffoldDestination('Home', Icon(Icons.home_outlined), Icon(Icons.home)),
   ScaffoldDestination('Records', Icon(Icons.face_outlined), Icon(Icons.face)),
   ScaffoldDestination('Employers', Icon(Icons.work_outline), Icon(Icons.work)),
   ScaffoldDestination('Heirs', Icon(Icons.group_outlined), Icon(Icons.group)),
-  ScaffoldDestination('Debug', Icon(Icons.code_outlined), Icon(Icons.code)),
+  ScaffoldDestination('Problems', Icon(Icons.task_outlined), Icon(Icons.task)),
 ];

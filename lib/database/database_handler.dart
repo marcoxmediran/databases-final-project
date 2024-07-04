@@ -7,6 +7,7 @@ import 'package:databases_final_project/models/relationship.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHandler {
   // Singleton pattern
@@ -24,19 +25,13 @@ class DatabaseHandler {
   }
 
   Future<Database> _initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    var path = join(documentsDirectory.path, 'database.db');
+    var path = 'database.db';
+    databaseFactory = databaseFactoryFfiWeb;
     return await openDatabase(
       path,
       onCreate: _onCreate,
       version: 1,
     );
-  }
-
-  Future<void> deleteTables() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'database.db');
-    await deleteDatabase(path);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -210,7 +205,7 @@ class DatabaseHandler {
       'EMPLOYERS NATURAL JOIN EMPLOYMENT',
       where: 'mid = ?',
       whereArgs: [mid],
-      orderBy: 'dateEmployed DESC',
+      orderBy: 'isCurrentEmployment DESC, dateEmployed DESC',
     );
     return List.generate(
         maps.length, (index) => Employment.fromMap(maps[index]));
@@ -290,13 +285,492 @@ class DatabaseHandler {
     );
   }
 
-  Future<void> deleteAllRows() async {
+  Future<void> demoTables() async {
     final db = await _databaseHandler.database;
-    await db.execute('DELETE FROM MEMBERS');
-    await db.execute('DELETE FROM EMPLOYERS');
-    await db.execute('DELETE FROM HEIRS');
     await db.execute('DELETE FROM EMPLOYMENT');
     await db.execute('DELETE FROM HEIR_RELATIONSHIPS');
+    await db.execute('DELETE FROM EMPLOYERS');
+    await db.execute('DELETE FROM HEIRS');
+    await db.execute('DELETE FROM MEMBERS');
+    await db.execute("DELETE FROM sqlite_sequence WHERE NAME = 'EMPLOYERS'");
+    await db.execute("DELETE FROM sqlite_sequence WHERE NAME = 'HEIRS'");
+    await db.execute("DELETE FROM sqlite_sequence WHERE NAME = 'MEMBERS'");
+    Member memberA = Member(
+      mid: 1,
+      occupationalStatus: 'Employed',
+      membershipType: 'Voluntary Employed',
+      memberName: 'Bongbong Marcos',
+      motherName: 'Michelle Robinson Obama',
+      fatherName: 'Barrack Hussein Obama',
+      spouseName: '',
+      dateOfBirth: '2003-09-23',
+      placeOfBirth: 'Rosario, Cavite',
+      age: 0,
+      sex: 'Male',
+      height: '173',
+      weight: '53',
+      maritalStatus: 'Single',
+      citizenship: 'Filipino',
+      frequencyOfPayment: 'Quarterly',
+      tin: '123123123',
+      sss: '64789112345',
+      permanentAddress: 'General Trias City, Cavite',
+      presentAddress: 'General Trias City, Cavite',
+      preferredAddress: '',
+      cellphoneNumber: '09490007779',
+      dateOfRegistration: '2024-03-12',
+    );
+    Member memberB = Member(
+      mid: 2,
+      occupationalStatus: 'Employed',
+      membershipType: 'Mandatory Employed',
+      memberName: 'Bart JoJo Simpson',
+      motherName: 'Marge Jacqueline Simpson',
+      fatherName: 'Homer Jay Simpson',
+      spouseName: 'Jenda Yellow Simpson',
+      dateOfBirth: '1979-04-01',
+      placeOfBirth: 'Las Vegas, Nevada, USA',
+      age: 0,
+      sex: 'Male',
+      height: '122',
+      weight: '39',
+      maritalStatus: 'Legally Separated',
+      citizenship: 'American',
+      frequencyOfPayment: 'Monthly',
+      tin: '456456456',
+      sss: '47890867519',
+      permanentAddress: 'Las Vegas, Nevada, USA',
+      presentAddress: '742 Evergreen Terrace, Springfields, USA',
+      preferredAddress: 'Permanent Address',
+      cellphoneNumber: '14577890098',
+      dateOfRegistration: '1995-07-18',
+    );
+    Member memberC = Member(
+      mid: 3,
+      occupationalStatus: 'Employed',
+      membershipType: 'Voluntary OFW',
+      memberName: 'Kimiko Sato',
+      motherName: 'Nana Sato',
+      fatherName: 'Kuro Sato',
+      spouseName: '',
+      dateOfBirth: '1997-07-07',
+      placeOfBirth: 'Furano, Hokkaido, Japan',
+      age: 0,
+      sex: 'Male',
+      height: '184',
+      weight: '64',
+      maritalStatus: 'Single',
+      citizenship: 'Japanese',
+      frequencyOfPayment: 'Monthly',
+      tin: '108116231',
+      sss: '73928361088',
+      permanentAddress: 'Furano, Hokkaido, Japan',
+      presentAddress: 'El Dorado, Don Bosco, Paranaque City',
+      preferredAddress: 'Present Address',
+      cellphoneNumber: '08012345678',
+      dateOfRegistration: '2019-05-15',
+    );
+    Member memberD = Member(
+      mid: 4,
+      occupationalStatus: 'Employed',
+      membershipType: 'Mandatory OFW',
+      memberName: 'Shen Quanrui',
+      motherName: 'Shen Hao',
+      fatherName: 'Shen Hanbin',
+      spouseName: 'Shen Gyuvin',
+      dateOfBirth: '1998-05-01',
+      placeOfBirth: 'Shanghai, China',
+      age: 0,
+      sex: 'Male',
+      height: '183',
+      weight: '60',
+      maritalStatus: 'Married',
+      citizenship: 'Chinese',
+      frequencyOfPayment: 'Quarterly',
+      tin: '109876543',
+      sss: '710202325',
+      permanentAddress: 'Seoul, South Korea',
+      presentAddress: 'Mapo-gu, Seoul, South Korea',
+      preferredAddress: 'Present Address',
+      cellphoneNumber: '87000000',
+      dateOfRegistration: '2024-06-15',
+    );
+    Member memberE = Member(
+      mid: 5,
+      occupationalStatus: 'Employed',
+      membershipType: 'Mandatory Self-Employed',
+      memberName: 'Loi Reyes',
+      motherName: 'Joy Ful Reyes',
+      fatherName: 'Rich Mound Reyes',
+      spouseName: '',
+      dateOfBirth: '1993-11-14',
+      placeOfBirth: 'Liloan, Cebu City',
+      age: 0,
+      sex: 'Female',
+      height: '165',
+      weight: '55',
+      maritalStatus: 'Single',
+      citizenship: 'Filipino',
+      frequencyOfPayment: 'Monthly',
+      tin: '462017402',
+      sss: '28361892503',
+      permanentAddress: 'Liloan, Cebu City',
+      presentAddress: 'Liloan, Cebu City',
+      preferredAddress: 'Present Address',
+      cellphoneNumber: '9456789921',
+      dateOfRegistration: '2021-09-23',
+    );
+
+    Employer employerA = Employer(
+      employerKey: 1,
+      employerName: 'Google Philippines',
+      employerAddress: 'Pedro Gil St., Manila',
+    );
+    Employer employerB = Employer(
+      employerKey: 2,
+      employerName: 'StaySafe Philippines',
+      employerAddress: 'Taguig, Metro Manila',
+    );
+    Employer employerC = Employer(
+      employerKey: 3,
+      employerName: 'Nvidia',
+      employerAddress: 'Santa Clara, California, USA',
+    );
+    Employer employerD = Employer(
+      employerKey: 4,
+      employerName: 'AMD',
+      employerAddress: 'Santa Clara, California, USA',
+    );
+    Employer employerE = Employer(
+      employerKey: 5,
+      employerName: "City Treasurer's Office of Manila",
+      employerAddress: 'Ermita, Manila, Metro Manila',
+    );
+    Employer employerF = Employer(
+      employerKey: 6,
+      employerName: 'Polytechnic University of the Philippines',
+      employerAddress: 'Teresa St., Sta. Mesa, Manila, Metro Manila',
+    );
+    Employer employerG = Employer(
+      employerKey: 7,
+      employerName: 'Philippine General Hospital',
+      employerAddress: 'Taft Avenue, Manila, Metro Manila',
+    );
+    Employer employerH = Employer(
+      employerKey: 8,
+      employerName: 'Paranaque Doctors Hospital',
+      employerAddress: 'Betterliving Subdivision, Dona Soledad, Paranaque',
+    );
+    Employer employerI = Employer(
+      employerKey: 9,
+      employerName: 'Ospital ng Paranaque',
+      employerAddress: 'Quirino Ave., Paranaque',
+    );
+    Employer employerJ = Employer(
+      employerKey: 10,
+      employerName: 'WakeOne Entertainment',
+      employerAddress: '153 Tojeon-ro, Mapo-gu, Seoul, South Korea',
+    );
+    Employer employerK = Employer(
+      employerKey: 11,
+      employerName: 'Northeast Dental Clinic',
+      employerAddress:
+          'Panphil B Frasco New Liloan Public Market, Liloan, Cebu City',
+    );
+    Employer employerL = Employer(
+      employerKey: 12,
+      employerName: 'AZOTI Cafe',
+      employerAddress: 'Purok Tugas, North Road, Liloan, 6002 Cebu',
+    );
+
+    Heir heirA = Heir(
+      heirKey: 0,
+      heirName: 'Baby Love Bird',
+      heirDateOfBirth: '2023-02-26',
+    );
+    Heir heirB = Heir(
+      heirKey: 1,
+      heirName: 'Lisa Marie Simpson',
+      heirDateOfBirth: '1980-12-17',
+    );
+    Heir heirC = Heir(
+      heirKey: 2,
+      heirName: 'Margaret Lenny Simpson',
+      heirDateOfBirth: '1986-01-14',
+    );
+    Heir heirD = Heir(
+      heirKey: 3,
+      heirName: 'Yves Sato',
+      heirDateOfBirth: '2000-08-18',
+    );
+    Heir heirE = Heir(
+      heirKey: 4,
+      heirName: 'Miks Sato',
+      heirDateOfBirth: '2009-12-14',
+    );
+    Heir heirF = Heir(
+      heirKey: 5,
+      heirName: 'Shen Jiwoong',
+      heirDateOfBirth: '1998-10-14',
+    );
+    Heir heirG = Heir(
+      heirKey: 6,
+      heirName: 'Sheen Reyes',
+      heirDateOfBirth: '2015-05-19',
+    );
+    Heir heirH = Heir(
+      heirKey: 7,
+      heirName: 'Jo Lim',
+      heirDateOfBirth: '1990-10-30',
+    );
+
+    Employment employmentA = Employment(
+      employerKey: 1,
+      employerName: '',
+      employerAddress: '',
+      mid: 1,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Mobile App Developer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '45000',
+      dateEmployed: '2024-01-04',
+    );
+    Employment employmentB = Employment(
+      employerKey: 2,
+      employerName: '',
+      employerAddress: '',
+      mid: 1,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Mobile App Developer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '32000',
+      dateEmployed: '2020-05-06',
+    );
+    Employment employmentC = Employment(
+      employerKey: 3,
+      employerName: '',
+      employerAddress: '',
+      mid: 1,
+      isCurrentEmployment: 'No',
+      occupation: 'Systems Design Engineer',
+      employmentStatus: 'Project-Based',
+      totalMonthlyIncome: '35000',
+      dateEmployed: '2014-12-14',
+    );
+    Employment employmentD = Employment(
+      employerKey: 4,
+      employerName: '',
+      employerAddress: '',
+      mid: 1,
+      isCurrentEmployment: 'No',
+      occupation: 'Program Manager',
+      employmentStatus: 'Part-Time',
+      totalMonthlyIncome: '41000',
+      dateEmployed: '2009-09-17',
+    );
+    Employment employmentE = Employment(
+      employerKey: 5,
+      employerName: '',
+      employerAddress: '',
+      mid: 2,
+      isCurrentEmployment: 'Yes',
+      occupation: 'City Treasurer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '35000',
+      dateEmployed: '2021-10-29',
+    );
+    Employment employmentF = Employment(
+      employerKey: 6,
+      employerName: '',
+      employerAddress: '',
+      mid: 2,
+      isCurrentEmployment: 'No',
+      occupation: 'Accounting Officer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '28000',
+      dateEmployed: '2016-12-15',
+    );
+    Employment employmentG = Employment(
+      employerKey: 7,
+      employerName: '',
+      employerAddress: '',
+      mid: 2,
+      isCurrentEmployment: 'No',
+      occupation: 'Accounting Officer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '22000',
+      dateEmployed: '2005-01-19',
+    );
+    Employment employmentH = Employment(
+      employerKey: 8,
+      employerName: '',
+      employerAddress: '',
+      mid: 3,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Anesthesiologist',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '50000',
+      dateEmployed: '2017-02-18',
+    );
+    Employment employmentI = Employment(
+      employerKey: 9,
+      employerName: '',
+      employerAddress: '',
+      mid: 3,
+      isCurrentEmployment: 'No',
+      occupation: 'Anesthetic Physician',
+      employmentStatus: 'Part-Time',
+      totalMonthlyIncome: '30000',
+      dateEmployed: '2021-04-21',
+    );
+    Employment employmentJ = Employment(
+      employerKey: 10,
+      employerName: '',
+      employerAddress: '',
+      mid: 4,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Fashion Designer',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '50000',
+      dateEmployed: '2023-07-10',
+    );
+    Employment employmentK = Employment(
+      employerKey: 11,
+      employerName: '',
+      employerAddress: '',
+      mid: 5,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Dental Technician',
+      employmentStatus: 'Regular',
+      totalMonthlyIncome: '55000',
+      dateEmployed: '2014-12-15',
+    );
+    Employment employmentL = Employment(
+      employerKey: 12,
+      employerName: '',
+      employerAddress: '',
+      mid: 5,
+      isCurrentEmployment: 'Yes',
+      occupation: 'Barista',
+      employmentStatus: 'Part-Time',
+      totalMonthlyIncome: '23000',
+      dateEmployed: '2023-10-24',
+    );
+
+    Relationship relationshipA = Relationship(
+      heirKey: 1,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 1,
+      heirRelationship: 'Pet',
+    );
+    Relationship relationshipB = Relationship(
+      heirKey: 2,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 2,
+      heirRelationship: 'Sister',
+    );
+    Relationship relationshipC = Relationship(
+      heirKey: 3,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 2,
+      heirRelationship: 'Sister',
+    );
+    Relationship relationshipD = Relationship(
+      heirKey: 1,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 2,
+      heirRelationship: 'Neighbor',
+    );
+    Relationship relationshipE = Relationship(
+      heirKey: 4,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 3,
+      heirRelationship: 'Sister',
+    );
+    Relationship relationshipF = Relationship(
+      heirKey: 5,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 3,
+      heirRelationship: 'Sister',
+    );
+    Relationship relationshipG = Relationship(
+      heirKey: 6,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 4,
+      heirRelationship: 'Brother',
+    );
+    Relationship relationshipH = Relationship(
+      heirKey: 7,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 5,
+      heirRelationship: 'Sister',
+    );
+    Relationship relationshipI = Relationship(
+      heirKey: 8,
+      heirName: '',
+      heirDateOfBirth: '',
+      mid: 5,
+      heirRelationship: 'Cousin',
+    );
+
+    insertMember(memberA);
+    insertMember(memberB);
+    insertMember(memberC);
+    insertMember(memberD);
+    insertMember(memberE);
+
+    insertEmployer(employerA);
+    insertEmployer(employerB);
+    insertEmployer(employerC);
+    insertEmployer(employerD);
+    insertEmployer(employerE);
+    insertEmployer(employerF);
+    insertEmployer(employerG);
+    insertEmployer(employerH);
+    insertEmployer(employerI);
+    insertEmployer(employerJ);
+    insertEmployer(employerK);
+    insertEmployer(employerL);
+
+    insertHeir(heirA);
+    insertHeir(heirB);
+    insertHeir(heirC);
+    insertHeir(heirD);
+    insertHeir(heirE);
+    insertHeir(heirF);
+    insertHeir(heirG);
+    insertHeir(heirH);
+
+    insertEmployment(employmentA);
+    insertEmployment(employmentB);
+    insertEmployment(employmentC);
+    insertEmployment(employmentD);
+    insertEmployment(employmentE);
+    insertEmployment(employmentF);
+    insertEmployment(employmentG);
+    insertEmployment(employmentH);
+    insertEmployment(employmentI);
+    insertEmployment(employmentJ);
+    insertEmployment(employmentK);
+    insertEmployment(employmentL);
+
+    insertRelationship(relationshipA);
+    insertRelationship(relationshipB);
+    insertRelationship(relationshipC);
+    insertRelationship(relationshipD);
+    insertRelationship(relationshipE);
+    insertRelationship(relationshipF);
+    insertRelationship(relationshipG);
+    insertRelationship(relationshipH);
+    insertRelationship(relationshipI);
   }
 
   Future<void> rawQuery(String query) async {

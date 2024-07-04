@@ -1,11 +1,7 @@
-import 'dart:io';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/ui/home.dart';
 
-Future main() async {
-  if (Platform.isWindows || Platform.isLinux) () => sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+void main() async {
   runApp(const MyApp());
 }
 
