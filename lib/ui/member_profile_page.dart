@@ -37,7 +37,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context)),
             flexibleSpace: FlexibleSpaceBar(
-              title: Center(child: Text(member.memberName)),
+              title: Text(member.memberName),
               background: Column(
                 children: [
                   const SizedBox(height: 64),
