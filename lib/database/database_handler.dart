@@ -32,7 +32,8 @@ class DatabaseHandler {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
+    await db.execute(
+      '''
       CREATE TABLE "MEMBERS" (
       	"mid"	INTEGER NOT NULL,
       	"occupationalStatus"	TEXT NOT NULL,
@@ -60,8 +61,10 @@ class DatabaseHandler {
       	PRIMARY KEY("mid" AUTOINCREMENT),
         UNIQUE("occupationalStatus","membershipType","memberName","motherName","fatherName","spouseName","dateOfBirth","placeOfBirth","sex","height","weight","maritalStatus","citizenship","frequencyOfPayment","tin","sss","permanentAddress","presentAddress","preferredAddress","cellphoneNumber","dateOfRegistration")
       )
-    ''');
-    await db.execute('''
+    ''',
+    );
+    await db.execute(
+      '''
       CREATE TABLE "EMPLOYERS" (
 	      "employerKey"	INTEGER NOT NULL,
 	      "employerName"	TEXT NOT NULL,
@@ -69,8 +72,10 @@ class DatabaseHandler {
 	      PRIMARY KEY("employerKey" AUTOINCREMENT),
         UNIQUE("employerName","employerAddress")
       )
-    ''');
-    await db.execute('''
+    ''',
+    );
+    await db.execute(
+      '''
       CREATE TABLE "HEIRS" (
       	"heirKey"	INTEGER NOT NULL,
       	"heirName"	TEXT NOT NULL,
@@ -78,8 +83,10 @@ class DatabaseHandler {
       	PRIMARY KEY("heirKey" AUTOINCREMENT),
         UNIQUE("heirName","heirDateOfBirth")
       )
-    ''');
-    await db.execute('''
+    ''',
+    );
+    await db.execute(
+      '''
       CREATE TABLE "EMPLOYMENT" (
       	"mid"	INTEGER NOT NULL,
       	"employerKey"	INTEGER NOT NULL,
@@ -92,8 +99,10 @@ class DatabaseHandler {
       	FOREIGN KEY("employerKey") REFERENCES "EMPLOYERS"("employerKey"),
       	FOREIGN KEY("mid") REFERENCES "MEMBERS"("mid")
       )
-    ''');
-    await db.execute('''
+    ''',
+    );
+    await db.execute(
+      '''
       CREATE TABLE "HEIR_RELATIONSHIPS" (
       	"mid"	INTEGER NOT NULL,
       	"heirKey"	INTEGER NOT NULL,
@@ -102,7 +111,8 @@ class DatabaseHandler {
       	FOREIGN KEY("heirKey") REFERENCES "HEIRS"("heirKey"),
       	FOREIGN KEY("mid") REFERENCES "MEMBERS"("mid")
       )
-    ''');
+    ''',
+    );
   }
 
   Future<void> insertMember(Member member) async {
@@ -125,6 +135,16 @@ class DatabaseHandler {
 
   Future<void> deleteMember(Member member) async {
     final db = await _databaseHandler.database;
+    await db.delete(
+      'EMPLOYMENT',
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
+    await db.delete(
+      'HEIR_RELATIONSHIPS',
+      where: 'mid = ?',
+      whereArgs: [member.mid],
+    );
     await db.delete(
       'MEMBERS',
       where: 'mid = ?',
@@ -167,15 +187,21 @@ class DatabaseHandler {
   Future<List<Member>> getMembers() async {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
-        'SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age FROM MEMBERS;');
+      '''
+        SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age
+        FROM MEMBERS;
+      ''',
+    );
     return List.generate(maps.length, (index) => Member.fromMap(maps[index]));
   }
 
   Future<List<Member>> searchMembers(String keyword) async {
     final db = await _databaseHandler.database;
-    final List<Map<String, dynamic>> maps = await db.rawQuery(
-        "SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age FROM MEMBERS WHERE LOWER(memberName) LIKE ? OR mid IN (?);",
-        ['%${keyword.toLowerCase()}%', keyword]);
+    final List<Map<String, dynamic>> maps = await db.rawQuery("""
+        SELECT *, cast ( (julianday(CURRENT_DATE) - julianday(dateOfBirth)) / 365.25 as int ) AS age
+        FROM MEMBERS WHERE LOWER(memberName) LIKE ?
+          OR mid IN (?);
+      """, ['%${keyword.toLowerCase()}%', keyword]);
     return List.generate(maps.length, (index) => Member.fromMap(maps[index]));
   }
 
@@ -212,7 +238,12 @@ class DatabaseHandler {
     final db = await _databaseHandler.database;
     final employerKey = employer.employerKey;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
-      'SELECT isCurrentEmployment, COUNT(*) FROM EMPLOYMENT WHERE employerKey = ? GROUP BY isCurrentEmployment ORDER BY isCurrentEmployment DESC;',
+      '''
+        SELECT isCurrentEmployment, COUNT(*)
+        FROM EMPLOYMENT WHERE employerKey = ?
+        GROUP BY isCurrentEmployment
+        ORDER BY isCurrentEmployment DESC;
+      ''',
       [employerKey],
     );
     return maps;
@@ -313,7 +344,7 @@ class DatabaseHandler {
       sss: '64789112345',
       permanentAddress: 'General Trias City, Cavite',
       presentAddress: 'General Trias City, Cavite',
-      preferredAddress: '',
+      preferredAddress: 'Present Address',
       cellphoneNumber: '09490007779',
       dateOfRegistration: '2024-03-12',
     );
@@ -773,5 +804,140 @@ class DatabaseHandler {
   Future<void> rawQuery(String query) async {
     final db = await _databaseHandler.database;
     await db.rawQuery(query);
+  }
+
+  Future<List<Map>> simple1() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT mid, memberName, membershipType
+        FROM MEMBERS
+        WHERE maritalStatus = ?
+      ''',
+      ['Single'],
+    );
+  }
+
+  Future<List<Map>> simple2() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT * 
+        FROM EMPLOYERS
+        WHERE employerAddress LIKE ?
+      ''',
+      ['%Manila%'],
+    );
+  }
+
+  Future<List<Map>> simple3() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT * 
+        FROM HEIRS
+        WHERE heirName LIKE ?
+      ''',
+      ['%Sato%'],
+    );
+  }
+
+  Future<List<Map>> medium1() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT employmentStatus, SUM(totalMonthlyIncome) AS totalIncome
+        FROM EMPLOYMENT
+        GROUP BY employmentStatus
+        HAVING totalIncome > 35000;
+      ''',
+    );
+  }
+
+  Future<List<Map>> medium2() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT membershipType, COUNT(*) AS memberCount
+        FROM MEMBERS
+        WHERE presentAddress NOT LIKE ? 
+        GROUP BY membershipType;
+      ''',
+      ['%Cavite%'],
+    );
+  }
+
+  Future<List<Map>> medium3() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT occupation, COUNT(*) AS countHiredInDecember
+        FROM EMPLOYMENT
+        WHERE dateEmployed LIKE ?
+        GROUP BY occupation
+        ORDER BY occupation;
+      ''',
+      ['%-12-%'],
+    );
+  }
+
+  Future<List<Map>> medium4() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+          SELECT strftime(?, heirDateOfBirth) AS birthMonth, COUNT(*) AS numOfHeirs
+          FROM HEIRS
+          GROUP BY birthMonth
+          HAVING numOfHeirs > 1
+          ORDER BY birthMonth;
+        ''',
+      ['%m'],
+    );
+  }
+
+  Future<List<Map>> difficult1() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT M.mid, SUM(totalMonthlyIncome) AS totalMonthlyIncome
+        FROM MEMBERS AS M, EMPLOYMENT AS E
+        WHERE M.mid = E.mid AND E.employmentStatus = ?
+          AND E.occupation = ?;
+      ''',
+      ['Regular', 'Mobile App Developer'],
+    );
+  }
+
+  Future<List<Map>> difficult2() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT M.memberName, ER.employerName, ENT.totalMonthlyIncome
+        FROM MEMBERS AS M, EMPLOYERS AS ER, EMPLOYMENT AS ENT
+        WHERE M.mid = ENT.mid AND ENT.employerKey = ER.employerKey
+          AND ENT.employmentStatus = ?
+          AND ENT.occupation IN (?, ?)
+        ORDER BY ENT.totalMonthlyIncome DESC;
+      ''',
+      ['Regular', 'Accounting Officer', 'Fashion Designer'],
+    );
+  }
+
+  Future<List<Map>> difficult3() async {
+    final db = await _databaseHandler.database;
+    return await db.rawQuery(
+      '''
+        SELECT M.mid, M.memberName, M.citizenship, ENT.dateEmployed
+        FROM MEMBERS AS M, EMPLOYMENT AS ENT
+        WHERE M.mid = ENT.mid
+          AND 
+            (
+              M.citizenship = ? AND substr(ENT.dateEmployed, 1, 4) < ?
+              OR M.citizenship != ? AND substr(ENT.dateEmployed, 1, 4) >= ?
+            )
+        ORDER BY M.citizenship;
+      ''',
+      ['Filipino', '2020', 'Filipino', '2020'],
+    );
   }
 }
