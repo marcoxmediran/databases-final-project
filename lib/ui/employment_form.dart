@@ -206,8 +206,10 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
                 );
+                if (birthdate != null) {
                 employmentDateController.text =
                     birthdate.toString().split(' ')[0];
+                }
               },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),

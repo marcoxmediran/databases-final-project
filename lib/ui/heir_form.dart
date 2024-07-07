@@ -95,10 +95,11 @@ class _HeirFormPageState extends State<HeirFormPage> {
                   context: context,
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
-                  initialDate: DateTime.now(),
                 );
-                heirBirthdateController.text =
-                    birthdate.toString().split(' ')[0];
+                if (birthdate != null) {
+                  heirBirthdateController.text =
+                      birthdate.toString().split(' ')[0];
+                }
               },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),

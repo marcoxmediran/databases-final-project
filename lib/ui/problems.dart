@@ -106,7 +106,7 @@ class _ProblemsPageState extends State<ProblemsPage> {
                       CircleAvatar(child: Icon(Icons.description_outlined)),
                   title: Text('Moderate Problem 3'),
                   subtitle: Text(
-                      'Count how many were hired in the month of December. sort by occupation.'),
+                      'Count how many were hired in the month of December. Sort by occupation.'),
                 ),
               ),
               InkWell(

@@ -147,9 +147,6 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                //Text(
-                                //    'MID: ${member.formatMid()}\nTIN: ${member.tin}\nSSS: ${member.sss}\nOccupational Status: ${member.occupationalStatus}\nMembership Category: ${member.membershipType}\nFrequency of Payment: ${member.frequencyOfPayment}\nDate of Registration: ${member.dateOfRegistration}\nAddress: ${member.getPrefferedAddress()}',
-                                //    style: const TextStyle(height: 2)),
                                 Text('MID: ${member.formatMid()}',
                                     style: TextStyle(height: textHeight)),
                                 Text('TIN: ${member.tin}',
@@ -168,8 +165,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                                 Text(
                                     'Date of Registration: ${member.dateOfRegistration}',
                                     style: TextStyle(height: textHeight)),
-                                Text(
-                                    'Preffered Address: ${member.getPrefferedAddress()}',
+                                Text('Address: ${member.getPrefferedAddress()}',
                                     style: TextStyle(height: textHeight)),
                                 const SizedBox(height: 16),
                               ],

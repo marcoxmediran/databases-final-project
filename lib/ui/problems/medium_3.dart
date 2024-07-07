@@ -45,7 +45,7 @@ class _Medium3State extends State<Medium3> {
                 Padding(
                   padding: EdgeInsets.only(left: padding, right: padding),
                   child: const Text(
-                      'Count how many were hired in the month of December. sort by occupation.'),
+                      'Count how many were hired in the month of December. Sort by occupation.'),
                 ),
                 const SizedBox(height: 32),
                 DataTable(
