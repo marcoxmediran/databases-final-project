@@ -215,8 +215,13 @@ class DatabaseHandler {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'EMPLOYERS',
-      where: 'LOWER(employerName) LIKE ? OR employerKey LIKE ?',
-      whereArgs: ['%${keyword.toLowerCase()}%', keyword],
+      where:
+          'LOWER(employerName) LIKE ? OR LOWER(employerAddress) LIKE ? OR employerKey LIKE ?',
+      whereArgs: [
+        '%${keyword.toLowerCase()}%',
+        '%${keyword.toLowerCase()}%',
+        keyword
+      ],
     );
     return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
   }
@@ -277,8 +282,8 @@ class DatabaseHandler {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'HEIRS',
-      where: 'LOWER(heirName) LIKE ? OR heirKey LIKE ?',
-      whereArgs: ['%${keyword.toLowerCase()}%', keyword],
+      where: 'LOWER(heirName) LIKE ? OR heirDateOfBirth LIKE ? OR heirKey LIKE ?',
+      whereArgs: ['%${keyword.toLowerCase()}%', keyword, keyword],
     );
     return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
   }
@@ -340,8 +345,8 @@ class DatabaseHandler {
       maritalStatus: 'Single',
       citizenship: 'Filipino',
       frequencyOfPayment: 'Quarterly',
-      tin: '123123123',
-      sss: '64789112345',
+      tin: '123123123123',
+      sss: '6478911234',
       permanentAddress: 'General Trias City, Cavite',
       presentAddress: 'General Trias City, Cavite',
       preferredAddress: 'Present Address',
@@ -365,8 +370,8 @@ class DatabaseHandler {
       maritalStatus: 'Legally Separated',
       citizenship: 'American',
       frequencyOfPayment: 'Monthly',
-      tin: '456456456',
-      sss: '47890867519',
+      tin: '456456456456',
+      sss: '4789086751',
       permanentAddress: 'Las Vegas, Nevada, USA',
       presentAddress: '742 Evergreen Terrace, Springfields, USA',
       preferredAddress: 'Permanent Address',
@@ -390,8 +395,8 @@ class DatabaseHandler {
       maritalStatus: 'Single',
       citizenship: 'Japanese',
       frequencyOfPayment: 'Monthly',
-      tin: '108116231',
-      sss: '73928361088',
+      tin: '108116231282',
+      sss: '7392836108',
       permanentAddress: 'Furano, Hokkaido, Japan',
       presentAddress: 'El Dorado, Don Bosco, Paranaque City',
       preferredAddress: 'Present Address',
@@ -415,8 +420,8 @@ class DatabaseHandler {
       maritalStatus: 'Married',
       citizenship: 'Chinese',
       frequencyOfPayment: 'Quarterly',
-      tin: '109876543',
-      sss: '710202325',
+      tin: '109876543293',
+      sss: '7102023253',
       permanentAddress: 'Seoul, South Korea',
       presentAddress: 'Mapo-gu, Seoul, South Korea',
       preferredAddress: 'Present Address',
@@ -440,8 +445,8 @@ class DatabaseHandler {
       maritalStatus: 'Single',
       citizenship: 'Filipino',
       frequencyOfPayment: 'Monthly',
-      tin: '462017402',
-      sss: '28361892503',
+      tin: '462017402023',
+      sss: '2836189250',
       permanentAddress: 'Liloan, Cebu City',
       presentAddress: 'Liloan, Cebu City',
       preferredAddress: 'Present Address',

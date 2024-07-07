@@ -125,17 +125,19 @@ class Member {
 
   Icon generateIcon() {
     if (sex == 'Male') {
-      return const Icon(Icons.face);
+      return (age < 60) ? const Icon(Icons.face) : const Icon(Icons.face_6);
     } else {
-      return const Icon(Icons.face_2);
+      return (age < 60) ? const Icon(Icons.face_2) : const Icon(Icons.face_4);
     }
   }
 
   Icon generateIconWithSize(var size) {
     if (sex == 'Male') {
-      return Icon(Icons.face, size: size);
+      return (age < 60)
+          ? Icon(Icons.face, size: size)
+          : Icon(Icons.face_6, size: size);
     } else {
-      return Icon(Icons.face_2, size: size);
+      return (age < 60) ? Icon(Icons.face_2, size: size) : Icon(Icons.face_4, size: size);
     }
   }
 
