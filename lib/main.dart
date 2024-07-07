@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:databases_final_project/ui/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Databases Final Project',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
         useMaterial3: true,
       ),
       home: const Home(),
