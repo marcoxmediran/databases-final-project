@@ -335,9 +335,15 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _tinController,
-                          validator: (value) => (value == null || value.isEmpty)
-                              ? 'This field is required'
-                              : null,
+                          validator: (value) {
+                            if ((value == null || value.isEmpty)) {
+                              return 'This field is required';
+                            } else if (value.length != 12) {
+                              return 'Invalid TIN Number';
+                            } else {
+                              return null;
+                            }
+                          },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -352,9 +358,15 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _sssController,
-                          validator: (value) => (value == null || value.isEmpty)
-                              ? 'This field is required'
-                              : null,
+                          validator: (value) {
+                            if ((value == null || value.isEmpty)) {
+                              return 'This field is required';
+                            } else if (value.length != 10) {
+                              return 'Invalid SSS Number';
+                            } else {
+                              return null;
+                            }
+                          },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -382,7 +394,9 @@ class _FormPageState extends State<FormPage> {
                       border: OutlineInputBorder(),
                       labelText: 'Contact Number',
                     ),
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[0-9+-]*'))
+                    ],
                   ),
                   _customSpacer(),
                   TextFormField(
