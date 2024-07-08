@@ -61,8 +61,9 @@ class _Difficult1State extends State<Difficult1> {
 -- SQL Query
 SELECT M.mid, SUM(totalMonthlyIncome) AS totalMonthlyIncome
 FROM MEMBERS AS M, EMPLOYMENT AS E
-WHERE M.mid = E.mid AND E.employmentStatus = ?
-  AND E.occupation = ?;
+WHERE M.mid = E.mid
+  AND E.employmentStatus = 'Regular'
+  AND E.occupation = 'Mobile App Developer';
                   ''',
                   style: GoogleFonts.jetBrainsMono(),
                 ),

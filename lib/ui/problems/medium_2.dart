@@ -61,7 +61,7 @@ class _Medium2State extends State<Medium2> {
 -- SQL Query
 SELECT membershipType, COUNT(*) AS memberCount
 FROM MEMBERS
-WHERE presentAddress NOT LIKE ? 
+WHERE presentAddress NOT LIKE '%Cavite%'
 GROUP BY membershipType;
                   ''',
                   style: GoogleFonts.jetBrainsMono(),

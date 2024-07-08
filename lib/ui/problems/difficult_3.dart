@@ -68,8 +68,8 @@ FROM MEMBERS AS M, EMPLOYMENT AS ENT
 WHERE M.mid = ENT.mid
   AND 
     (
-      M.citizenship = ? AND substr(ENT.dateEmployed, 1, 4) < ?
-      OR M.citizenship != ? AND substr(ENT.dateEmployed, 1, 4) >= ?
+      M.citizenship = 'Filipino' AND substr(ENT.dateEmployed, 1, 4) < 2020
+      OR M.citizenship != 'Filipino' AND substr(ENT.dateEmployed, 1, 4) >= 2020
     )
 ORDER BY M.citizenship;
                   ''',

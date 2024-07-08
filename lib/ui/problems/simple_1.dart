@@ -63,7 +63,7 @@ class _Simple1State extends State<Simple1> {
 -- SQL Query
 SELECT mid, memberName, membershipType
 FROM MEMBERS
-WHERE maritalStatus = ?
+WHERE maritalStatus = 'Single'
                   ''',
                   style: GoogleFonts.jetBrainsMono(),
                 ),

@@ -63,7 +63,7 @@ class _Simple3State extends State<Simple3> {
 -- SQL Query
 SELECT * 
 FROM HEIRS
-WHERE heirName LIKE ?
+WHERE heirName LIKE '%Sato%'
                   ''',
                   style: GoogleFonts.jetBrainsMono(),
                 ),

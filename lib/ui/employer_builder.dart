@@ -109,9 +109,9 @@ class _EmployerBuilderState extends State<EmployerBuilder> {
                                                 Text(
                                                     'Address: ${employer.employerAddress}'),
                                                 Text(
-                                                    'Currently employed members: ${employeeCount.first['isCurrentEmployment'] == 'Yes' ? employeeCount.first['COUNT(*)'] : 0}'),
+                                                    'Currently employed members: ${employeeCount.isEmpty ? 0 : employeeCount.first['isCurrentEmployment'] == 'Yes' ? employeeCount.first['COUNT(*)'] : 0}'),
                                                 Text(
-                                                    'Previously employed members: ${employeeCount.last['isCurrentEmployment'] == 'No' ? employeeCount.last['COUNT(*)'] : 0}'),
+                                                    'Previously employed members: ${employeeCount.isEmpty ? 0 : employeeCount.last['isCurrentEmployment'] == 'No' ? employeeCount.last['COUNT(*)'] : 0}'),
                                               ],
                                             ),
                                           ],

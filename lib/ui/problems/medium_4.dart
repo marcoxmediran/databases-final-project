@@ -59,7 +59,7 @@ class _Medium4State extends State<Medium4> {
                 Text(
                   '''
 -- SQL Query
-SELECT strftime(?, heirDateOfBirth) AS birthMonth, COUNT(*) AS numOfHeirs
+SELECT strftime('%m', heirDateOfBirth) AS birthMonth, COUNT(*) AS numOfHeirs
 FROM HEIRS
 GROUP BY birthMonth
 HAVING numOfHeirs > 1

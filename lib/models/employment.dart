@@ -70,6 +70,6 @@ class Employment extends Employer {
 
   @override
   String toString() {
-    return '$mid - $employerKey - $employerName: $isCurrentEmployment, $employmentStatus, $dateEmployed';
+    return '$mid - $employerKey - $employerName: $isCurrentEmployment, $employmentStatus, $totalMonthlyIncome, $dateEmployed';
   }
 }

@@ -64,8 +64,8 @@ class _Difficult2State extends State<Difficult2> {
 SELECT M.memberName, ER.employerName, ENT.totalMonthlyIncome
 FROM MEMBERS AS M, EMPLOYERS AS ER, EMPLOYMENT AS ENT
 WHERE M.mid = ENT.mid AND ENT.employerKey = ER.employerKey
-  AND ENT.employmentStatus = ?
-  AND ENT.occupation IN (?, ?)
+  AND ENT.employmentStatus = 'Regular'
+  AND ENT.occupation IN ('Accounting Officer', 'Fashion Designer')
 ORDER BY ENT.totalMonthlyIncome DESC;
                   ''',
                   style: GoogleFonts.jetBrainsMono(),

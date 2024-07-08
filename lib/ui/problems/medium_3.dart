@@ -61,7 +61,7 @@ class _Medium3State extends State<Medium3> {
 -- SQL Query
 SELECT occupation, COUNT(*) AS countHiredInDecember
 FROM EMPLOYMENT
-WHERE dateEmployed LIKE ?
+WHERE dateEmployed LIKE '%-12-%'
 GROUP BY occupation
 ORDER BY occupation;
                   ''',

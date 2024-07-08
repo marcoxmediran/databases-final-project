@@ -62,7 +62,7 @@ class _Simple2State extends State<Simple2> {
 -- SQL Query
 SELECT * 
 FROM EMPLOYERS
-WHERE employerAddress LIKE ?
+WHERE employerAddress LIKE '%Manila%'
                   ''',
                   style: GoogleFonts.jetBrainsMono(),
                 ),

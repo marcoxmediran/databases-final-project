@@ -95,18 +95,6 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
       employmentDateController.text = employment.dateEmployed;
     }
 
-    @override
-    void dispose() {
-      employerNameController.dispose();
-      employerAddressController.dispose();
-      isCurrentController.dispose();
-      occupationController.dispose();
-      statusController.dispose();
-      incomeController.dispose();
-      employmentDateController.dispose();
-      super.dispose();
-    }
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -207,8 +195,8 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                   lastDate: DateTime.now(),
                 );
                 if (birthdate != null) {
-                employmentDateController.text =
-                    birthdate.toString().split(' ')[0];
+                  employmentDateController.text =
+                      birthdate.toString().split(' ')[0];
                 }
               },
               decoration: const InputDecoration(
@@ -295,32 +283,34 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     var employments = <Employment>[];
-                    for (int i = 0; i < employmentCards.length; i++) {
-                      Employer employer = Employer(
-                        employerKey: 0,
-                        employerName: employerNames[i].text,
-                        employerAddress: employerAddresses[i].text,
-                      );
-                      employer.employerKey = await _insertEmployer(employer);
-                      employments.add(Employment(
-                        employerKey: employer.employerKey,
-                        employerName: employerNames[i].text,
-                        employerAddress: employerAddresses[i].text,
-                        mid: member.mid,
-                        isCurrentEmployment:
-                            isCurrentEmployment[i].dropDownValue?.value,
-                        occupation: occupations[i].text,
-                        employmentStatus:
-                            employmentStatus[i].dropDownValue?.value,
-                        totalMonthlyIncome: incomes[i].text,
-                        dateEmployed: employmentDates[i].text,
-                      ));
+                    if (validateForm()) {
+                      for (int i = 0; i < employmentCards.length; i++) {
+                        Employer employer = Employer(
+                          employerKey: 0,
+                          employerName: employerNames[i].text,
+                          employerAddress: employerAddresses[i].text,
+                        );
+                        employer.employerKey = await _insertEmployer(employer);
+                        employments.add(Employment(
+                          employerKey: employer.employerKey,
+                          employerName: employerNames[i].text,
+                          employerAddress: employerAddresses[i].text,
+                          mid: member.mid,
+                          isCurrentEmployment:
+                              isCurrentEmployment[i].dropDownValue?.value,
+                          occupation: occupations[i].text,
+                          employmentStatus:
+                              employmentStatus[i].dropDownValue?.value,
+                          totalMonthlyIncome: incomes[i].text,
+                          dateEmployed: employmentDates[i].text,
+                        ));
+                      }
+                      _deleteEmployments(member);
+                      employments
+                          .forEach((element) => _insertEmployment(element));
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     }
-                    _deleteEmployments(member);
-                    employments
-                        .forEach((element) => _insertEmployment(element));
-                    Navigator.pop(context);
-                    Navigator.pop(context);
                   }
                 },
                 child: const Text('Submit'),
@@ -331,6 +321,23 @@ class _EmploymentFormPageState extends State<EmploymentFormPage> {
         ],
       ),
     );
+  }
+
+  bool validateForm() {
+    for (int i = 0; i < employmentCards.length; i++) {
+      if (employerNames[i].text.isEmpty ||
+          employerAddresses[i].text.isEmpty ||
+          employerNames[i].text.isEmpty ||
+          employerAddresses[i].text.isEmpty ||
+          isCurrentEmployment[i].dropDownValue!.value.toString().isEmpty ||
+          occupations[i].text.isEmpty ||
+          employmentStatus[i].dropDownValue!.value.toString().isEmpty ||
+          incomes[i].text.isEmpty ||
+          employmentDates[i].text.isEmpty) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

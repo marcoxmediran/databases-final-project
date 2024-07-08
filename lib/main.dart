@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Databases Final Project',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
         useMaterial3: true,
       ),

@@ -69,6 +69,10 @@ class DatabaseHandler {
 	      "employerKey"	INTEGER NOT NULL,
 	      "employerName"	TEXT NOT NULL,
 	      "employerAddress"	TEXT NOT NULL,
+        CHECK(
+          employerName != ''
+          AND employerAddress != ''
+        ),
 	      PRIMARY KEY("employerKey" AUTOINCREMENT),
         UNIQUE("employerName","employerAddress")
       )
@@ -80,6 +84,10 @@ class DatabaseHandler {
       	"heirKey"	INTEGER NOT NULL,
       	"heirName"	TEXT NOT NULL,
       	"heirDateOfBirth"	TEXT NOT NULL,
+        CHECK(
+          heirName != ''
+          AND heirDateOfBirth != ''
+        ),
       	PRIMARY KEY("heirKey" AUTOINCREMENT),
         UNIQUE("heirName","heirDateOfBirth")
       )
@@ -95,6 +103,13 @@ class DatabaseHandler {
       	"employmentStatus"	TEXT NOT NULL,
       	"totalMonthlyIncome"	TEXT NOT NULL,
       	"dateEmployed"	TEXT NOT NULL,
+        CHECK(
+          isCurrentEmployment IN ('Yes', 'No')
+          AND LENGTH("occupation") > 0
+          AND employmentStatus IN ('Regular', 'Casual', 'Contractual', 'Project-Based', 'Part-Time')
+          AND totalMonthlyIncome != ''
+          AND dateEmployed != ''
+        ),
       	PRIMARY KEY("mid","employerKey"),
       	FOREIGN KEY("employerKey") REFERENCES "EMPLOYERS"("employerKey"),
       	FOREIGN KEY("mid") REFERENCES "MEMBERS"("mid")
@@ -220,7 +235,7 @@ class DatabaseHandler {
       whereArgs: [
         '%${keyword.toLowerCase()}%',
         '%${keyword.toLowerCase()}%',
-        keyword
+        '%$keyword%'
       ],
     );
     return List.generate(maps.length, (index) => Employer.fromMap(maps[index]));
@@ -282,8 +297,9 @@ class DatabaseHandler {
     final db = await _databaseHandler.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'HEIRS',
-      where: 'LOWER(heirName) LIKE ? OR heirDateOfBirth LIKE ? OR heirKey LIKE ?',
-      whereArgs: ['%${keyword.toLowerCase()}%', keyword, keyword],
+      where:
+          'LOWER(heirName) LIKE ? OR heirDateOfBirth LIKE ? OR heirKey LIKE ?',
+      whereArgs: ['%${keyword.toLowerCase()}%', '%$keyword%', '%$keyword%'],
     );
     return List.generate(maps.length, (index) => Heir.fromMap(maps[index]));
   }
@@ -332,10 +348,10 @@ class DatabaseHandler {
       mid: 1,
       occupationalStatus: 'Employed',
       membershipType: 'Voluntary Employed',
-      memberName: 'Bongbong Marcos',
+      memberName: 'John Doe',
       motherName: 'Michelle Robinson Obama',
       fatherName: 'Barrack Hussein Obama',
-      spouseName: '',
+      spouseName: 'Jane Doe',
       dateOfBirth: '2003-09-23',
       placeOfBirth: 'Rosario, Cavite',
       age: 0,
