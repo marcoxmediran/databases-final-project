@@ -69,10 +69,6 @@ class DatabaseHandler {
 	      "employerKey"	INTEGER NOT NULL,
 	      "employerName"	TEXT NOT NULL,
 	      "employerAddress"	TEXT NOT NULL,
-        CHECK(
-          employerName != ''
-          AND employerAddress != ''
-        ),
 	      PRIMARY KEY("employerKey" AUTOINCREMENT),
         UNIQUE("employerName","employerAddress")
       )
@@ -84,10 +80,6 @@ class DatabaseHandler {
       	"heirKey"	INTEGER NOT NULL,
       	"heirName"	TEXT NOT NULL,
       	"heirDateOfBirth"	TEXT NOT NULL,
-        CHECK(
-          heirName != ''
-          AND heirDateOfBirth != ''
-        ),
       	PRIMARY KEY("heirKey" AUTOINCREMENT),
         UNIQUE("heirName","heirDateOfBirth")
       )
@@ -922,8 +914,10 @@ class DatabaseHandler {
       '''
         SELECT M.mid, SUM(totalMonthlyIncome) AS totalMonthlyIncome
         FROM MEMBERS AS M, EMPLOYMENT AS E
-        WHERE M.mid = E.mid AND E.employmentStatus = ?
-          AND E.occupation = ?;
+        WHERE M.mid = E.mid
+          AND E.employmentStatus = ?
+          AND E.occupation = ?
+        GROUP BY M.mid;
       ''',
       ['Regular', 'Mobile App Developer'],
     );

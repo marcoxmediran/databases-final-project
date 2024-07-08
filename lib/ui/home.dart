@@ -68,6 +68,44 @@ class _HomeState extends State<Home> {
                   selectedIcon: destination.selectedIcon,
                 );
               }).toList(),
+              trailing: Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: TextButton(
+                      onPressed: () {
+                        showAboutDialog(
+                          context: context,
+                          applicationName: 'Pag-Ibig Database Management',
+                          children: [
+                            const Column(
+                              children: [
+                                Text(
+                                  'A graphical database management software for\nPag-Ibig Fund Membership forms developed in\npartial fulfillment for the course COMP 010 -\nInformation Management.',
+                                  textAlign: TextAlign.justify,
+                                ),
+                                SizedBox(height: 16),
+                                Text('Members:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                                Text('Lopez, Jenna Mae C.'),
+                                Text('Marquez, Jashlein Leanne T.'),
+                                Text('Mediran, Marcox C.'),
+                                Text('Serapio, Alessandra Nicole L.'),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                      child: const Text(
+                        'About Project',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               selectedIndex: screenIndex,
               useIndicator: true,
               onDestinationSelected: (int index) {

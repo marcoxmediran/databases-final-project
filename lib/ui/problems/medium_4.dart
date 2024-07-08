@@ -38,7 +38,7 @@ class _Medium4State extends State<Medium4> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(title: Text('Medium Problem 4'), pinned: true),
+          const SliverAppBar(title: Text('Moderate Problem 4'), pinned: true),
           SliverToBoxAdapter(
             child: Column(
               children: [

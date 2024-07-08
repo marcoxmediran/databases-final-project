@@ -175,9 +175,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _memberNameController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -187,9 +193,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _motherNameController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -199,9 +211,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _fatherNameController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -211,6 +229,14 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _spouseNameController,
+                    validator: (value) {
+                      if (value!.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Spouse\'s Name',
@@ -255,9 +281,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _citizenshipController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -270,9 +302,15 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _heightController,
-                          validator: (value) => (value == null || value.isEmpty)
-                              ? 'This field is required'
-                              : null,
+                          validator: (value) {
+                            if ((value == null || value.isEmpty)) {
+                              return 'This field is required';
+                            } else if (value.length > 3) {
+                              return 'Invalid height';
+                            } else {
+                              return null;
+                            }
+                          },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -287,9 +325,15 @@ class _FormPageState extends State<FormPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _weightController,
-                          validator: (value) => (value == null || value.isEmpty)
-                              ? 'This field is required'
-                              : null,
+                          validator: (value) {
+                            if ((value == null || value.isEmpty)) {
+                              return 'This field is required';
+                            } else if (value.length > 3) {
+                              return 'Invalid weight';
+                            } else {
+                              return null;
+                            }
+                          },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -338,7 +382,7 @@ class _FormPageState extends State<FormPage> {
                             if ((value == null || value.isEmpty)) {
                               return 'This field is required';
                             } else if (value.length != 12) {
-                              return 'Invalid TIN Number';
+                              return 'Invalid length (12 required)';
                             } else {
                               return null;
                             }
@@ -361,7 +405,7 @@ class _FormPageState extends State<FormPage> {
                             if ((value == null || value.isEmpty)) {
                               return 'This field is required';
                             } else if (value.length != 10) {
-                              return 'Invalid SSS Number';
+                              return 'Invalid length (10 required)';
                             } else {
                               return null;
                             }
@@ -385,9 +429,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _contactNumberController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 30) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -400,9 +450,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _placeOfBirthController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -412,9 +468,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _permanentAddressController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -424,9 +486,15 @@ class _FormPageState extends State<FormPage> {
                   _customSpacer(),
                   TextFormField(
                     controller: _presentAddressController,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) {
+                      if ((value == null || value.isEmpty)) {
+                        return 'This field is required';
+                      } else if (value.length > 255) {
+                        return 'Maximum length reached';
+                      } else {
+                        return null;
+                      }
+                    },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),

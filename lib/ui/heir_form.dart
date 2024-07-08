@@ -73,10 +73,15 @@ class _HeirFormPageState extends State<HeirFormPage> {
             _customSpacer(),
             TextFormField(
               controller: heirNameController,
-              validator: (value) => (value == null || value.isEmpty)
-                  ? 'This field is required'
-                  : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if ((value == null || value.isEmpty)) {
+                  return 'This field is required';
+                } else if (value.length > 255) {
+                  return 'Maximum length reached';
+                } else {
+                  return null;
+                }
+              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Full Name',
@@ -88,7 +93,6 @@ class _HeirFormPageState extends State<HeirFormPage> {
               validator: (value) => (value == null || value.isEmpty)
                   ? 'This field is required'
                   : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               readOnly: true,
               onTap: () async {
                 DateTime? birthdate = await showDatePicker(
@@ -109,10 +113,15 @@ class _HeirFormPageState extends State<HeirFormPage> {
             _customSpacer(),
             TextFormField(
               controller: heirRelationshipController,
-              validator: (value) => (value == null || value.isEmpty)
-                  ? 'This field is required'
-                  : null,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if ((value == null || value.isEmpty)) {
+                  return 'This field is required';
+                } else if (value.length > 255) {
+                  return 'Maximum length reached';
+                } else {
+                  return null;
+                }
+              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Relationship',
@@ -196,27 +205,29 @@ class _HeirFormPageState extends State<HeirFormPage> {
                   child: ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    var relationships = <Relationship>[];
-                    for (int i = 0; i < heirCards.length; i++) {
-                      Heir heir = Heir(
-                        heirKey: -1,
-                        heirName: heirNames[i].text,
-                        heirDateOfBirth: heirBirthdates[i].text,
-                      );
-                      heir.heirKey = await _insertHeir(heir);
-                      relationships.add(Relationship(
-                        heirKey: heir.heirKey,
-                        heirName: heirNames[i].text,
-                        heirDateOfBirth: heirBirthdates[i].text,
-                        mid: member.mid,
-                        heirRelationship: heirRelationships[i].text,
-                      ));
+                    if (validateForm()) {
+                      var relationships = <Relationship>[];
+                      for (int i = 0; i < heirCards.length; i++) {
+                        Heir heir = Heir(
+                          heirKey: -1,
+                          heirName: heirNames[i].text,
+                          heirDateOfBirth: heirBirthdates[i].text,
+                        );
+                        heir.heirKey = await _insertHeir(heir);
+                        relationships.add(Relationship(
+                          heirKey: heir.heirKey,
+                          heirName: heirNames[i].text,
+                          heirDateOfBirth: heirBirthdates[i].text,
+                          mid: member.mid,
+                          heirRelationship: heirRelationships[i].text,
+                        ));
+                      }
+                      _deleteRelationships(member);
+                      relationships
+                          .forEach((element) => _insertRelationship(element));
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     }
-                    _deleteRelationships(member);
-                    relationships
-                        .forEach((element) => _insertRelationship(element));
-                    Navigator.pop(context);
-                    Navigator.pop(context);
                   }
                 },
                 child: const Text('Submit'),
@@ -227,6 +238,17 @@ class _HeirFormPageState extends State<HeirFormPage> {
         ],
       ),
     );
+  }
+
+  bool validateForm() {
+    for (int i = 0; i < heirCards.length; i++) {
+      if (heirNames[i].text.isEmpty ||
+          heirBirthdates[i].text.isEmpty ||
+          heirRelationships[i].text.isEmpty) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
